@@ -33,7 +33,7 @@ jobs:
         run: cp -r ${{ inputs.custom-rules-folder }}/ /opt/hostedtoolcache/node/18.17.0/x64/lib/node_modules/bpmnlint/rules/
         
       - name: Copy .bpmnlintrc to BPMN folder
-        run: cp "${{ inputs.bpmnlintrc-path }}" "${{ github.workspace }}/"
+        run: cp "${{ inputs.bpmnlintrc-path }}" "$(dirname ${{ inputs.bpmn-file-path }})/.bpmnlintrc"
         
       - name: Read BPMN file content
         id: read-bpmn-file
