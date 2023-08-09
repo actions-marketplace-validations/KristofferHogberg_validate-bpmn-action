@@ -3,7 +3,7 @@ name: BPMN-Lint Validation
 on:
   workflow_call:
     inputs:
-      bpmn-folder:
+      bpmn-file:
         required: true
         type: string
       custom-rules-folder:
@@ -24,7 +24,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 14
+          node-version: 18.17.0
 
       - name: Install npm packages
         run: npm install -g bpmnlint
@@ -33,9 +33,8 @@ jobs:
         run: cp -r ${{ inputs.custom-rules-folder }}/* /usr/local/lib/node_modules/bpmnlint/rules/
 
       - name: Copy .bpmnlintrc to BPMN folder
-        run: cp ${{ inputs.bpmnlintrc-path }} $GITHUB_WORKSPACE/${{ inputs.bpmn-folder }}/.bpmnlintrc
-
+        run: cp "${{ inputs.bpmnlintrc-path }}" "${{ inputs.bpmn-folder }}/.bpmnlintrc"
+        
       - name: Run BPMNLint
-        run: |
-          bpmnlint --config $GITHUB_WORKSPACE/${{ inputs.bpmn-folder }}/.bpmnlintrc $GITHUB_WORKSPACE/${{ inputs.bpmn-folder }}/**/*.bpmn
+        run: bpmnlint "${{ inputs.bpmn-file }}"
         
