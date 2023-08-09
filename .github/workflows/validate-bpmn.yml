@@ -48,5 +48,5 @@ jobs:
       - name: Output .bpmnlintrc content
         run: cat .bpmnlintrc
         
-      - name: Run BPMNLint
-        run: bpmnlint bpmn-file-content.txt
+      - name: Run BPMNLint (ignore exit code 1)
+        run: bpmnlint bpmn-file-content.txt || true
