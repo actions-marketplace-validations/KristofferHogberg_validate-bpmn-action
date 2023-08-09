@@ -1,0 +1,41 @@
+name: BPMN-Lint Validation
+
+on:
+  workflow_call:
+    inputs:
+      bpmn-folder:
+        required: true
+        type: string
+      custom-rules-folder:
+        required: true
+        type: string
+      bpmnlintrc-path: 
+        required: true
+        type: string
+
+jobs:
+  validate_bpmn:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 14
+
+      - name: Install npm packages
+        run: npm install -g bpmnlint
+
+      - name: Copy custom rules to bpmnlint
+        run: cp -r ${{ inputs.custom-rules-folder }}/* /usr/local/lib/node_modules/bpmnlint/rules/
+
+      - name: Copy .bpmnlintrc to BPMN folder
+        run: cp ${{ inputs.bpmnlintrc-path }} $GITHUB_WORKSPACE/${{ inputs.bpmn-folder }}/.bpmnlintrc
+
+      - name: Run BPMNLint
+        run: |
+          bpmnlint --config $GITHUB_WORKSPACE/${{ inputs.bpmn-folder }}/.bpmnlintrc $GITHUB_WORKSPACE/${{ inputs.bpmn-folder }}/**/*.bpmn
+        
