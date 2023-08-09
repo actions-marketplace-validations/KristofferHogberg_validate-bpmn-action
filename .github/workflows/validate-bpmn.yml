@@ -27,7 +27,10 @@ jobs:
           node-version: 18.17.0
 
       - name: Install npm packages
-        run: npm install bpmnlint
+        run: npm install -g bpmnlint
+
+      - name: Display global npm root
+        run: npm root -g
 
       - name: Copy custom rules to bpmnlint
         run: cp -r "${{ github.workspace }}/custom_rules/"* "$(npm bin)/bpmnlint/rules/"
