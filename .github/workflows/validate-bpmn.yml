@@ -41,7 +41,7 @@ jobs:
         
       - name: Create .bpmnlinrc file
         run: |
-          cat "${{ inputs.bpmnlintrc-path: }}" > bpmnlint.txt
+          cat "${{ inputs.bpmnlintrc-path }}" > bpmnlint.txt
           
       - name: Output .bpmnlintrc content
         run: cat bpmnlintrc.txt
