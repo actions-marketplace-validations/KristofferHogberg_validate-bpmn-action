@@ -41,7 +41,7 @@ jobs:
         
       - name: Create .bpmnlintrc
         run: |
-          echo "${{ inputs.bpmnlintrc-path }}" > .bpmnlintrc
+          cat "${{ inputs.bpmnlintrc-path }}" > .bpmnlintrc
           
       - name: Output .bpmnlintrc content
         run: cat .bpmnlintrc
