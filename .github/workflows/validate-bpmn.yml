@@ -36,7 +36,6 @@ jobs:
         run: cp "${{ inputs.bpmnlintrc-path }}" "${{ inputs.bpmn-file-path | dirname }}/.bpmnlintrc"
         
       - name: Read BPMN file content
-        id: read-bpmn-file
         run: |
           cat "${{ github.workspace }}/${{ inputs.bpmn-file-path }}/${{ inputs.bpmn-file-path }}" > bpmn-file-content.txt
           
