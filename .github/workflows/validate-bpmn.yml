@@ -40,7 +40,7 @@ jobs:
         run: cp -r ${{ inputs.custom-rules-folder }}/ /opt/hostedtoolcache/node/18.17.0/x64/lib/node_modules/bpmnlint/rules/
         
       - name: Copy .bpmnlintrc to BPMN file directory
-        run: cp "${{ inputs.bpmnlintrc-path }}" "$(dirname ${{ inputs.bpmn-file-path }})"
+        run: cp "${{ inputs.bpmnlintrc-path }}" "$(dirname "${{ inputs.bpmn-file-path }}")"
         
       - name: Run BPMNLint
         run: bpmnlint bpmn-file-content.txt
