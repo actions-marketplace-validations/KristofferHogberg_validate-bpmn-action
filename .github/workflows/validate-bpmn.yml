@@ -3,7 +3,7 @@ name: BPMN-Lint Validation
 on:
   workflow_call:
     inputs:
-      bpmn-file:
+      bpmn-file-path:
         required: true
         type: string
       custom-rules-folder:
@@ -29,22 +29,16 @@ jobs:
       - name: Install npm packages
         run: npm install -g bpmnlint
 
-      - name: Display global npm root
-        run: npm root -g
-
       - name: Copy custom rules to bpmnlint
-        run: cp -r "${{ inputs.custom-rules-folder }}" /opt/hostedtoolcache/node/18.17.0/x64/lib/node_modules/bpmnlint/rules/
+        run: cp -r ${{ inputs.custom-rules-folder }}/ /usr/local/lib/node_modules/bpmnlint/rules/
 
       - name: Copy .bpmnlintrc to BPMN folder
-        run: cp "${{ inputs.bpmnlintrc-path }}" "${{ github.workspace }}/${{ inputs.bpmn-file }}"
+        run: cp "${{ inputs.bpmnlintrc-path }}" "${{ github.workspace }}/${{ inputs.bpmn-file-path }}/.bpmnlintrc"
         
+      - name: Read BPMN file content
+        id: read-bpmn-file
+        run: |
+          cat "${{ github.workspace }}/${{ inputs.bpmn-file-path }}/${{ inputs.bpmn-file-path }}" > bpmn-file-content.txt
+
       - name: Run BPMNLint
-        run: bpmnlint invalid-model.bpmn
-
-      - name: Display bpmnlint output
-        run: echo "$bpmnlint-output"
-        env:
-          bpmnlint-output: ${{ env.bpmnlint-output }}
-
-
-        
+        run: bpmnlint bpmn-file-content.txt
