@@ -30,7 +30,7 @@ jobs:
         run: npm install -g bpmnlint
 
       - name: Copy custom rules to bpmnlint
-        run: cp -r ${{ inputs.custom-rules-folder }}/* /usr/local/lib/node_modules/bpmnlint/rules/
+        run: cp -r "${{ inputs.custom-rules-folder }}/"* "$(npm bin -g)/bpmnlint/rules/"
 
       - name: Copy .bpmnlintrc to BPMN folder
         run: cp "${{ inputs.bpmnlintrc-path }}" "${{ inputs.bpmn-folder }}/.bpmnlintrc"
