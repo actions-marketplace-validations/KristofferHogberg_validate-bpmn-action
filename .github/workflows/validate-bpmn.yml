@@ -39,6 +39,7 @@ jobs:
         run: cp "${{ inputs.bpmnlintrc-path }}" "${{ github.workspace }}/${{ inputs.bpmn-file }}"
         
       - name: Run BPMNLint
-        run: bpmnlint "${{ inputs.bpmn-file }}" 
+        run: bpmnlint invalid-model.bpmn
+
 
         
