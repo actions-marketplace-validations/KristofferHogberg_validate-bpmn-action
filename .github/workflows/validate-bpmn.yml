@@ -39,12 +39,12 @@ jobs:
       - name: Copy custom rules to bpmnlint
         run: cp -r ${{ inputs.custom-rules-folder }}/ /opt/hostedtoolcache/node/18.17.0/x64/lib/node_modules/bpmnlint/rules/
         
-      - name: Create .bpmnlintrc
+      - name: Create .bpmnlinrc file
         run: |
-          cp "${{ inputs.bpmnlintrc-path }}" .bpmnlintrc
+          cat "${{ inputs.bpmnlintrc-path: }}" > bpmnlint.txt
           
       - name: Output .bpmnlintrc content
-        run: cat .bpmnlintrc
+        run: cat bpmnlintrc.txt
         
       - name: Run BPMNLint
         run: bpmnlint bpmn-file-content.txt
