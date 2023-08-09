@@ -30,8 +30,7 @@ jobs:
         run: npm install -g bpmnlint
 
       - name: Copy custom rules to bpmnlint
-        run: cp -r ${{ inputs.custom-rules-folder }}/ /usr/local/lib/node_modules/bpmnlint/rules/
-
+        run: cp -r ${{ inputs.custom-rules-folder }}/ /opt/hostedtoolcache/node/18.17.0/x64/lib/node_modules/bpmnlint/rules/
       - name: Copy .bpmnlintrc to BPMN folder
         run: cp "${{ inputs.bpmnlintrc-path }}" "${{ github.workspace }}/${{ inputs.bpmn-file-path }}/.bpmnlintrc"
         
@@ -39,6 +38,9 @@ jobs:
         id: read-bpmn-file
         run: |
           cat "${{ github.workspace }}/${{ inputs.bpmn-file-path }}/${{ inputs.bpmn-file-path }}" > bpmn-file-content.txt
-
+          
+      - name: Output BPMN file content
+        run: cat bpmn-file-content.txt
+        
       - name: Run BPMNLint
         run: bpmnlint bpmn-file-content.txt
