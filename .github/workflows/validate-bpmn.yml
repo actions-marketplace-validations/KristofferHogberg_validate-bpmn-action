@@ -28,7 +28,6 @@ jobs:
 
       - name: Install bpmnlint
         run: npm install -g bpmnlint
-        working-directory: ${{ github.workspace }}/bpmnlint
 
       - name: View contents of root directory
         run: ls -al /
