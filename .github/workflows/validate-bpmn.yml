@@ -31,10 +31,10 @@ jobs:
       
       - name: Read BPMN file content
         run: |
-          cat "${{ inputs.bpmn-file-path }}" > bpmn-file-content.txt
+          cat "${{ inputs.bpmn-file-path }}" > bpmn-file-content.bpmn
           
       - name: Output BPMN file content
-        run: cat bpmn-file-content.txt
+        run: cat bpmn-file-content.bpmn
         
       - name: Copy custom rules to bpmnlint
         run: cp -r ${{ inputs.custom-rules-folder }}/ /opt/hostedtoolcache/node/18.17.0/x64/lib/node_modules/bpmnlint/rules/
