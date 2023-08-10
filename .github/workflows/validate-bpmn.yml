@@ -35,7 +35,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-      - run: npm install -g bpmnlint
+      - run: npm install bpmnlint
 
       - name: View contents of root directory
         run: ls -al /
