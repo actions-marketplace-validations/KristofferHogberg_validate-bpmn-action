@@ -49,4 +49,4 @@ jobs:
         run: cat .bpmnlintrc
         
       - name: Run BPMNLint (ignore exit code 1)
-        run: bpmnlint bpmn-file-content.txt || true
+        run: bpmnlint bpmn-file-content.bpmn || true
