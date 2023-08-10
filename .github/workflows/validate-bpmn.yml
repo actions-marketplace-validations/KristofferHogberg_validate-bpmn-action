@@ -29,6 +29,9 @@ jobs:
       - name: Install bpmnlint
         run: npm install -g bpmnlint
         
+      - name: Find bpmnlint installation path
+        run: echo "$(which bpmnlint)"
+
       - name: Print PATH variable
         run: echo $PATH
         
