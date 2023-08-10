@@ -39,7 +39,7 @@ jobs:
       - name: Copy custom rules to bpmnlint
         run: cp -r ${{ inputs.custom-rules-folder }} $RUNNER_TOOL_CACHE/Node/${{ env.NODE_VERSION }}/x64/lib/node_modules/bpmnlint/rules/
         env:
-          NODE_VERSION: 14  # Adjust to match the Node.js version above
+          NODE_VERSION: 18.17.0 # Adjust to match the Node.js version above
         
       - name: Create .bpmnlintrc
         run: |
