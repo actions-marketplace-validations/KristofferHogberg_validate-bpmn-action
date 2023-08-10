@@ -28,6 +28,27 @@ jobs:
 
       - name: Install bpmnlint
         run: npm install -g bpmnlint
+        
+        
+      - name: Install jq
+        run: sudo apt-get install jq
+
+      - name: Search for bpmnlint directory
+        run: |
+          # Search for the bpmnlint directory using the find command
+          # and save the result in a variable
+          bpmnlint_dir=$(find / -type d -name "bpmnlint" 2>/dev/null)
+
+          # Output the bpmnlint directory path
+          echo "BPMNLint Directory: $bpmnlint_dir"
+
+          # Store the bpmnlint directory path as an output variable
+          echo "BPMNLINT_DIRECTORY=$bpmnlint_dir" >> $GITHUB_ENV
+
+      - name: Use bpmnlint directory path
+        run: |
+          # Use the stored bpmnlint directory path
+          echo "Using BPMNLint Directory: $BPMNLINT_DIRECTORY"   
 
       - name: View contents of root directory
         run: ls -la /
