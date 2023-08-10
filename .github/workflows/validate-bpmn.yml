@@ -28,12 +28,18 @@ jobs:
 
       - name: Install bpmnlint
         run: npm install -g bpmnlint
+        
+        
+      - name: Print PATH variable
+        run: echo $PATH 
       
       - name: Install tree command
         run: sudo apt-get update && sudo apt-get install tree -y
 
       - name: List structure
-        run: tree /home/runner/work/KristofferHogberg
+        run: tree /home/runner/work/validate-bpmn-action
+        
+        
         
       - name: Read BPMN file content
         run: |
