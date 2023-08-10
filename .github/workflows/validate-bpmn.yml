@@ -35,9 +35,13 @@ jobs:
       - name: Print PATH variable
         run: echo $PATH
         
+      - name: Copy custom rules to bpmnlint/rules folder
+        run: |
+          cp -r ${{ inputs.custom-rules-folder }}/* /opt/hostedtoolcache/node/18.17.0/x64/lib/node_modules/bpmnlint/rules/
+        working-directory: ${{ github.workspace }}  
+        
       - name: List contents of bpmnlint/rules directory
         run: ls -al /opt/hostedtoolcache/node/18.17.0/x64/lib/node_modules/bpmnlint/rules
-   
         
       - name: Read BPMN file content
         run: |
@@ -60,8 +64,8 @@ jobs:
       - name: Output .bpmnlintrc content
         run: cat .bpmnlintrc
 
-      - name: Copy custom rules to bpmnlint/rules
-        run: cp -r ${{ inputs.custom-rules-folder }} ${{ github.workspace }}/bpmnlint/rules/
+ 
+
 
       - name: Run BPMNLint (ignore exit code 1)
         run: bpmnlint bpmn-file-content.bpmn || true
