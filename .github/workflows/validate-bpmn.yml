@@ -35,17 +35,9 @@ jobs:
       - name: Print PATH variable
         run: echo $PATH
         
-      - name: List contents of /opt/hostedtoolcache/node/18.17.0/x64/bin
-        run: ls -al /opt/hostedtoolcache/node/18.17.0/x64/bin
-        
-      - name: List contents of /opt/hostedtoolcache/node/18.17.0/x64/bin/bpmnlint
-        run: ls -al /opt/hostedtoolcache/node/18.17.0/x64/bin/bpmnlint
-
-      - name: Install tree command
-        run: sudo apt-get update && sudo apt-get install tree -y
-
-      - name: Search for rules folder
-        run: find / -type d -name "rules" 2>/dev/null
+      - name: List contents of bpmnlint/rules directory
+        run: ls -al /opt/hostedtoolcache/node/18.17.0/x64/lib/node_modules/bpmnlint/rules
+   
         
       - name: Read BPMN file content
         run: |
