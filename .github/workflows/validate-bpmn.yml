@@ -42,8 +42,13 @@ jobs:
       - name: Create .bpmnlintrc
         run: |
           echo '{
-            "extends": "bpmnlint:recommended"
-          }' > .bpmnlintrc
+              "extends": "bpmnlint:recommended",
+              "rules": {
+                  "force-digit-id": "error",
+                  "force-service-task-type": "error"
+              }
+          }
+          ' > .bpmnlintrc
 
       - name: Output .bpmnlintrc content
         run: cat .bpmnlintrc
