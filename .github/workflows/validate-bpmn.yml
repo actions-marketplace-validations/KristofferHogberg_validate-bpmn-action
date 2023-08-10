@@ -32,6 +32,15 @@ jobs:
       - name: View contents of root directory
         run: ls -la /
         
+      - name: Search for bpmnlint directory
+        id: search_bpmnlint
+        run: |
+          bpmnlint_dir=$(find / -type d -name "bpmnlint" 2>/dev/null)
+
+          echo "BPMNLint Directory: $bpmnlint_dir"
+
+          echo "BPMNLINT_DIRECTORY=$bpmnlint_dir" >> $GITHUB_ENV   
+        
       - name: Read BPMN file content
         run: |
           cat "${{ inputs.bpmn-file-path }}" > bpmn-file-content.bpmn
