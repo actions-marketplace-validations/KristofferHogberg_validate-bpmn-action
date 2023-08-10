@@ -27,8 +27,8 @@ jobs:
           node-version: 18.17.0
 
       - name: Install npm packages
-        run: npm install -g bpmnlint
-      
+        run: npm install -g bpmnlint --prefix ${{ github.workspace }}/bpmnlint
+
       - name: Read BPMN file content
         run: |
           cat "${{ inputs.bpmn-file-path }}" > bpmn-file-content.bpmn
@@ -37,9 +37,7 @@ jobs:
         run: cat bpmn-file-content.bpmn
         
       - name: Copy custom rules to bpmnlint
-        run: cp -r ${{ inputs.custom-rules-folder }} $RUNNER_TOOL_CACHE/Node/${{ env.NODE_VERSION }}/x64/lib/node_modules/bpmnlint/rules/
-        env:
-          NODE_VERSION: 18.17.0 # Adjust to match the Node.js version above
+        run: cp -r ${{ inputs.custom-rules-folder }} ${{ github.workspace }}/bpmnlint/rules/
         
       - name: Create .bpmnlintrc
         run: |
