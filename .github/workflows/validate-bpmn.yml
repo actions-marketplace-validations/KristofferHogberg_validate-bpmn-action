@@ -27,8 +27,7 @@ jobs:
           node-version: 18.17.0
 
       - name: Install bpmnlint
-        run: npm install bpmnlint
-        working-directory: app
+        run: npm install -g bpmnlint
 
       - name: View contents of root directory
         run: ls -la /
