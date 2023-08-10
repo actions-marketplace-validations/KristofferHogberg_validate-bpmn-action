@@ -27,14 +27,12 @@ jobs:
           node-version: 18.17.0
 
       - name: Install bpmnlint
-        run: npm install -g bpmnlint
+        run: npm install bpmnlint
+        working-directory: app
 
       - name: View contents of root directory
-        run: ls -al /
+        run: ls -la /
         
-      - name: List complete file structure
-        run: ls -R /
-
       - name: Read BPMN file content
         run: |
           cat "${{ inputs.bpmn-file-path }}" > bpmn-file-content.bpmn
