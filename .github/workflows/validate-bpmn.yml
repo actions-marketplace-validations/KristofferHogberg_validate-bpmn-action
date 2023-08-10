@@ -38,14 +38,11 @@ jobs:
       - name: List contents of /opt/hostedtoolcache/node/18.17.0/x64/bin
         run: ls -al /opt/hostedtoolcache/node/18.17.0/x64/bin
 
-      - name: List contents of /home/runner/.local/bin
-        run: ls -al /home/runner/.local/bin
-      
       - name: Install tree command
         run: sudo apt-get update && sudo apt-get install tree -y
 
       - name: List structure
-        run: tree /home/runner/work/validate-bpmn-action
+        run: tree /opt/hostedtoolcache/node/18.17.0/x64/bin/bpmnlint
         
       - name: Read BPMN file content
         run: |
