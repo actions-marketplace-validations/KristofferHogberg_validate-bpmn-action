@@ -33,7 +33,7 @@ jobs:
         run: sudo apt-get update && sudo apt-get install tree -y
 
       - name: List structure
-        run: tree /home/runner/runners/2.307.1/bin
+        run: tree /home/runner/runners/2.307.1
         
       - name: Read BPMN file content
         run: |
