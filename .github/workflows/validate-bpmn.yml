@@ -29,10 +29,10 @@ jobs:
       - name: Install bpmnlint
         run: npm install -g bpmnlint
       
-      - name: Install tree
-        run: yum install tree
-        
-      - name: List file structure
+      - name: Install tree command
+        run: sudo apt-get update && sudo apt-get install tree -y
+
+      - name: List custom rules folder
         run: tree
         
       - name: Read BPMN file content
