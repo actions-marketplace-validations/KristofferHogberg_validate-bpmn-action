@@ -21,48 +21,45 @@ defaults:
 jobs:
   validate_bpmn:
     runs-on: ubuntu-latest
-    
-    strategy:
-      matrix:
-        node-version: [10.x, 12.x, 14.x, 18x]
 
     steps:
-      - uses: actions/checkout@v3
-      - name: Install npm packages
-      
-        uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-      - run: npm install bpmnlint
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      - name: View contents of root directory
-        run: ls -al /
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18.17.0
+        
+    - name: Install bpmnlint
+      run: npm install -g bpmnlint
 
-      - name: Read BPMN file content
-        run: |
-          cat "${{ inputs.bpmn-file-path }}" > bpmn-file-content.bpmn
+    - name: View contents of root directory
+      run: ls -al /
 
-      - name: Output BPMN file content
-        run: cat bpmn-file-content.bpmn
+    - name: Read BPMN file content
+      run: |
+        cat "${{ inputs.bpmn-file-path }}" > bpmn-file-content.bpmn
 
-      - name: Create .bpmnlintrc
-        run: |
-          echo '{
-              "extends": "bpmnlint:recommended",
-              "rules": {
-                  "force-digit-id": "error",
-                  "force-service-task-type": "error"
-              }
-          }
-          ' > .bpmnlintrc
+    - name: Output BPMN file content
+      run: cat bpmn-file-content.bpmn
 
-      - name: Output .bpmnlintrc content
-        run: cat .bpmnlintrc
+    - name: Create .bpmnlintrc
+      run: |
+        echo '{
+            "extends": "bpmnlint:recommended",
+            "rules": {
+                "force-digit-id": "error",
+                "force-service-task-type": "error"
+            }
+        }
+        ' > .bpmnlintrc
 
-      - name: Copy custom rules to bpmnlint
-        run: cp -r ${{ inputs.custom-rules-folder }} ${{ github.workspace }}/bpmnlint/rules/
+    - name: Output .bpmnlintrc content
+      run: cat .bpmnlintrc
 
-      - name: Run BPMNLint (ignore exit code 1)
-        run: bpmnlint bpmn-file-content.bpmn || true
+    - name: Copy custom rules to bpmnlint
+      run: cp -r ${{ inputs.custom-rules-folder }} ${{ github.workspace }}/bpmnlint/rules/
+
+    - name: Run BPMNLint (ignore exit code 1)
+      run: bpmnlint bpmn-file-content.bpmn || true
