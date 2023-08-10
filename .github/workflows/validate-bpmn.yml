@@ -32,8 +32,8 @@ jobs:
       - name: Install tree command
         run: sudo apt-get update && sudo apt-get install tree -y
 
-      - name: List custom rules folder
-        run: tree
+      - name: List structure
+        run: tree/
         
       - name: Read BPMN file content
         run: |
