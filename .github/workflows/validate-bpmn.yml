@@ -33,7 +33,7 @@ jobs:
         run: sudo apt-get update && sudo apt-get install tree -y
 
       - name: List structure
-        run: tree /home/runner
+        run: tree /home/runner/bin/lib/node_modules/npm
         
       - name: Read BPMN file content
         run: |
