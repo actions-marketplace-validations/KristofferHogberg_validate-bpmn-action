@@ -29,12 +29,6 @@ jobs:
       - name: Install bpmnlint
         run: npm install -g bpmnlint
         
-      - name: Find bpmnlint installation path
-        run: echo "$(which bpmnlint)"
-
-      - name: Print PATH variable
-        run: echo $PATH
-        
       - name: Copy custom rules to bpmnlint/rules folder
         run: |
           cp -r ${{ inputs.custom-rules-folder }}/* /opt/hostedtoolcache/node/18.17.0/x64/lib/node_modules/bpmnlint/rules/
@@ -46,9 +40,6 @@ jobs:
       - name: Read BPMN file content
         run: |
           cat "${{ inputs.bpmn-file-path }}" > bpmn-file-content.bpmn
-
-      - name: Output BPMN file content
-        run: cat bpmn-file-content.bpmn
 
       - name: Create .bpmnlintrc
         run: |
@@ -63,9 +54,6 @@ jobs:
 
       - name: Output .bpmnlintrc content
         run: cat .bpmnlintrc
-
- 
-
 
       - name: Run BPMNLint (ignore exit code 1)
         run: bpmnlint bpmn-file-content.bpmn || true
