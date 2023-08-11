@@ -43,8 +43,7 @@ jobs:
           
       - name: Read .bpmnlintrc file
         run: |
-          cat "${{ inputs.bpmnlintrc-path }}" > .bpmnlintrc.txt
-          mv .bpmnlintrc.txt .bpmnlintrc
+          cat "${{ inputs.bpmnlintrc-path }}" > .bpmnlintrc
 
       - name: Output .bpmnlintrc content
         run: cat .bpmnlintrc
