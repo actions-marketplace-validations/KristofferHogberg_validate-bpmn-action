@@ -37,14 +37,16 @@ jobs:
       - name: List contents of bpmnlint/rules directory
         run: ls -al /opt/hostedtoolcache/node/18.17.0/x64/lib/node_modules/bpmnlint/rules
         
-      - name: Copy content of bpmnlintrc-path to .bpmnlintrc
-        run: |
-          cat "${{ inputs.bpmnlintrc-path }}" > temp_bpmnlintrc
-          mv temp_bpmnlintrc "${{ github.workspace }}/.bpmnlintrc"
-
       - name: Read BPMN file content
         run: |
-          cat "${{ inputs.bpmn-file-path }}" > "${{ github.workspace }}/bpmn-file-content.bpmn"
+          cat "${{ inputs.bpmn-file-path }}" > bpmn-file-content.bpmn
+          
+      - name: Read .bpmnlintrc file
+        run: |
+          touch "${{ inputs.bpmnlintrc-path }}" > .bpmnlintrc
+
+      - name: Output .bpmnlintrc content
+        run: cat .bpmnlintrc
 
       - name: Run BPMNLint (ignore exit code 1)
-        run: bpmnlint "${{ github.workspace }}/bpmn-file-content.bpmn" || true
+        run: bpmnlint bpmn-file-content.bpmn || true		
