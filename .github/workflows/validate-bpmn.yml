@@ -41,12 +41,12 @@ jobs:
         run: |
           cat "${{ inputs.bpmn-file-path }}" > bpmn-file-content.bpmn
           
-      - name: Read .bpmnlintrc file
+      - name: Read content of .bpmnlintrc
         run: |
-          cat "${{ inputs.bpmnlintrc-path }}" > .bpmnlintrc
+          cat .bpmnlintrc > bpmnlintrc-content.json
           
       - name: Output .bpmnlintrc TEST
-        run: cat .bpmnlintrc    
+        run: cat bpmnlintrc-content.json
           
       - name: Create .bpmnlintrc
         run: |
