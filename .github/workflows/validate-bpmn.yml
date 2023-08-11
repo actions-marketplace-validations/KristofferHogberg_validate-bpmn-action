@@ -40,7 +40,14 @@ jobs:
       - name: Read BPMN file content
         run: |
           cat "${{ inputs.bpmn-file-path }}" > bpmn-file-content.bpmn
-
+          
+      - name: Read .bpmnlintrc file
+        run: |
+          cat "${{ inputs.bpmnlintrc-path }}" > .bpmnlintrc
+          
+      - name: Output .bpmnlintrc TEST
+        run: cat .bpmnlintrc    
+          
       - name: Create .bpmnlintrc
         run: |
           echo '{
