@@ -45,8 +45,15 @@ jobs:
         run: |
           cat .bpmnlintrc > bpmnlintrc-content.json
           
-      - name: Output .bpmnlintrc TEST
+      - name: Output .bpmnlintrc JSON
         run: cat bpmnlintrc-content.json
+        
+      - name: Write content back to .bpmnlintrc
+        run: |
+          cat bpmnlintrc-content.json > .bpmnlintrc
+          
+      - name: Output .bpmnlintrc .BPMNLINTRC
+        run: cat bpmnlintrc-content.json   
           
       - name: Create .bpmnlintrc
         run: |
