@@ -15,21 +15,19 @@ To use this workflow, follow these steps:
    Open the `bpmn-validation.yml` file and paste the following code:
 
    ```yaml
-name: Call BPMN-validate workflow
+   name: Call BPMN-validate workflow
 
-on:
-  push:
-    branches:
-      - main
+   on:
+     push:
+       branches:
+         - main
 
-jobs:
-  call-bpmn-validate-workflow:
-    permissions:
-      contents: read
-    uses: KristofferHogberg/validate-bpmn-action/.github/workflows/validate-bpmn.yml@main
-    with:
-      bpmn-file-path: 'BPMN/demo-process.bpmn'
-      custom-rules-folder: 'custom_rules/'
-      bpmnlintrc-path: 'BPMN/.bpmnlintrc'
-    
-
+   jobs:
+     call-bpmn-validate-workflow:
+       permissions:
+         contents: read
+       uses: KristofferHogberg/validate-bpmn-action/.github/workflows/validate-bpmn.yml@main
+       with:
+         bpmn-file-path: 'BPMN/demo-process.bpmn'
+         custom-rules-folder: 'custom_rules/'
+         bpmnlintrc-path: 'BPMN/.bpmnlintrc'
