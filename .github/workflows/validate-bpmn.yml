@@ -43,8 +43,9 @@ jobs:
           
       - name: Copy content of bpmnlintrc-path to .bpmnlintrc
         run: |
-          cat "${{ inputs.bpmnlintrc-path }}" > .bpmnlintrc
-          
+          cat "${{ inputs.bpmnlintrc-path }}" > temp_bpmnlintrc
+          mv temp_bpmnlintrc .bpmnlintrc
+
       - name: Output .bpmnlintrc content
         run: cat .bpmnlintrc    
     
