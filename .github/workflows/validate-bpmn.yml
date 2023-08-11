@@ -43,10 +43,10 @@ jobs:
           
       - name: Copy content of bpmnlintrc-path to .bpmnlintrc
         run: |
-          cat "${{ inputs.bpmnlintrc-path }}" > .bpmnlintrc.txt
+          cat "${{ inputs.bpmnlintrc-path }}" > .bpmnlintrc
           
       - name: Output .bpmnlintrc content
-        run: cat .bpmnlintrc.txt	    
+        run: cat .bpmnlintrc    
     
       - name: Run BPMNLint (ignore exit code 1)
         run: bpmnlint bpmn-file-content.bpmn || true
