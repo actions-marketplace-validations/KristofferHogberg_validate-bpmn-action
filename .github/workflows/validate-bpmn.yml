@@ -41,33 +41,9 @@ jobs:
         run: |
           cat "${{ inputs.bpmn-file-path }}" > bpmn-file-content.bpmn
           
-      - name: Read content of .bpmnlintrc
+      - name: Copy content of bpmnlintrc-path to .bpmnlintrc
         run: |
-          cat .bpmnlintrc > bpmnlintrc-content.json
-          
-      - name: Output .bpmnlintrc JSON
-        run: cat bpmnlintrc-content.json
-        
-      - name: Write content back to .bpmnlintrc
-        run: |
-          cat bpmnlintrc-content.json > .bpmnlintrc
-          
-      - name: Output .bpmnlintrc .BPMNLINTRC
-        run: cat bpmnlintrc-content.json   
-          
-      - name: Create .bpmnlintrc
-        run: |
-          echo '{
-              "extends": "bpmnlint:recommended",
-              "rules": {
-                  "force-digit-id": "error",
-                  "force-service-task-type": "error"
-              }
-          }
-          ' > .bpmnlintrc
-
-      - name: Output .bpmnlintrc content
-        run: cat .bpmnlintrc
-
+          cp ${{ inputs.bpmnlintrc-path }} .bpmnlintrc
+    
       - name: Run BPMNLint (ignore exit code 1)
         run: bpmnlint bpmn-file-content.bpmn || true
