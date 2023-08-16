@@ -2,6 +2,11 @@ name: "Test action"
 description: "Testing action with NodeJs"
 author: "Kristoffer Högberg"
 
+inputs: 
+  name:
+  description: "A name"
+  required: true
+  default: "Input a name"
 runs:
   using: "node16"
   main: "dist/index.js"
