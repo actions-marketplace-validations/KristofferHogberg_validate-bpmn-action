@@ -1,14 +1,9 @@
 import {getInput, setFailed} from "@actions/core";
-import {context, getOctokit} from "@actions/github";
 
 async function run(){
-    const bpmnFiles = getInput("bpmn-files-path");
     const customRules = getInput("custom-rules-folder");
+    const bpmnFiles = getInput("bpmn-files-path");
     const bpmnlintrc = getInput("bpmnlintrc-path");
-    // const token = getInput("gh-token");
-
-
-    // const octokitClient = getOctokit(token);
 
     try {
 
