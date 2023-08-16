@@ -32,37 +32,18 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core_1 = __nccwpck_require__(186);
 const fs = __importStar(__nccwpck_require__(147));
-const path = __importStar(__nccwpck_require__(17));
 async function run() {
     var _a;
     const customRules = (0, core_1.getInput)("custom-rules-folder");
     const bpmnFiles = (0, core_1.getInput)("bpmn-files-path");
     const bpmnlintrc = (0, core_1.getInput)("bpmnlintrc-path");
+    console.log("TEST");
     try {
         console.log(`BPMN files: ${bpmnFiles}`);
         console.log(`Custom rules: ${customRules}`);
         console.log(`bpmnlintrc file: ${bpmnlintrc}`);
-        const directoryPath = customRules;
-        // Read the files in the directory
-        fs.readdir(directoryPath, (err, files) => {
-            if (err) {
-                console.error('Error reading directory:', err);
-                return;
-            }
-            // Loop through each file in the directory
-            files.forEach(file => {
-                const filePath = path.join(directoryPath, file);
-                // Read the content of each file
-                fs.readFile(filePath, 'utf-8', (readErr, content) => {
-                    if (readErr) {
-                        console.error(`Error reading file ${file}:`, readErr);
-                        return;
-                    }
-                    console.log(`Content of ${file}:`);
-                    console.log(content);
-                });
-            });
-        });
+        const dirContents = fs.readdirSync(__dirname);
+        console.log(dirContents);
     }
     catch (error) {
         (0, core_1.setFailed)((_a = error === null || error === void 0 ? void 0 : error.message) !== null && _a !== void 0 ? _a : "Unknown error");
