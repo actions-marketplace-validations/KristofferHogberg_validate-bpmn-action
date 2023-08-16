@@ -1,7 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import {getInput, setFailed} from "@actions/core";
-
+import { getInput, setFailed } from "@actions/core";
 
 async function run() {
     const customRules = getInput("custom-rules-folder");
@@ -13,12 +12,18 @@ async function run() {
         console.log(`Custom rules: ${customRules}`);
         console.log(`bpmnlintrc file: ${bpmnlintrc}`);
 
-        const dirContents = fs.readdirSync(bpmnFiles, 'utf-8'); // Read directory contents
-        console.log(dirContents);
+        const dirContents = fs.readdirSync(bpmnFiles, 'utf-8');
+        console.log(`Contents of ${bpmnFiles}:`, dirContents);
+
+        for (const file of dirContents) {
+            const filePath = path.join(bpmnFiles, file);
+            const fileContent = fs.readFileSync(filePath, 'utf-8');
+            console.log(`Content of ${file}:`, fileContent);
+        }
 
     } catch (error) {
         setFailed((error as Error)?.message ?? "Unknown error");
     }
 }
 
-
+run();

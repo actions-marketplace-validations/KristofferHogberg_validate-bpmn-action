@@ -31,6 +31,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const fs = __importStar(__nccwpck_require__(147));
+const path = __importStar(__nccwpck_require__(17));
 const core_1 = __nccwpck_require__(186);
 async function run() {
     var _a;
@@ -41,13 +42,19 @@ async function run() {
         console.log(`BPMN files: ${bpmnFiles}`);
         console.log(`Custom rules: ${customRules}`);
         console.log(`bpmnlintrc file: ${bpmnlintrc}`);
-        const dirContents = fs.readdirSync(bpmnFiles, 'utf-8'); // Read directory contents
-        console.log(dirContents);
+        const dirContents = fs.readdirSync(bpmnFiles, 'utf-8');
+        console.log(`Contents of ${bpmnFiles}:`, dirContents);
+        for (const file of dirContents) {
+            const filePath = path.join(bpmnFiles, file);
+            const fileContent = fs.readFileSync(filePath, 'utf-8');
+            console.log(`Content of ${file}:`, fileContent);
+        }
     }
     catch (error) {
         (0, core_1.setFailed)((_a = error === null || error === void 0 ? void 0 : error.message) !== null && _a !== void 0 ? _a : "Unknown error");
     }
 }
+run();
 
 
 /***/ }),
