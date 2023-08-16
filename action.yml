@@ -1,12 +1,18 @@
-name: "Test action"
-description: "Testing action with NodeJs"
+name: "Validate BPMN process models."
+description: "GitHub Action workflow for automated validation of BPMN process models"
 author: "Kristoffer Högberg"
 
-inputs: 
-  name:
-  description: "A name"
-  required: true
-  default: "Input a name"
+inputs:
+  bpmn-files-path:
+    description: 'Location of your process models.'
+    required: true
+  custom-rules-folder:
+    description: 'Location of your custom bpmnlint rules..'
+    required: true
+  bpmnlintrc-path:
+    description: "Location of your bpmnlintrc configuration file."
+
 runs:
   using: "node16"
   main: "dist/index.js"
+
