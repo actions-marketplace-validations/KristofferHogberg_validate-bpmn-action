@@ -1,7 +1,6 @@
-import {getInput, setFailed} from "@actions/core";
 import * as fs from 'fs';
 import * as path from 'path';
-
+import {getInput, setFailed} from "@actions/core";
 
 
 async function run(){
@@ -10,7 +9,9 @@ async function run(){
     const bpmnFiles = getInput("bpmn-files-path");
     const bpmnlintrc = getInput("bpmnlintrc-path");
 
-    console.log("TEST")
+    const fs = require('fs');
+    const content = fs.readdirSync(bpmnFiles, 'utf-8');
+    console.log(content);
 
     try {
 
