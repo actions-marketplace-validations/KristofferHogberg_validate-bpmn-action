@@ -43,12 +43,12 @@ function run() {
                 const filePath = path.join(bpmnFilesPath, file);
                 try {
                     const result = (0, child_process_1.execSync)(`bpmnlint "${filePath}"`, {
-                        encoding: "utf-8",
-                        stdio: "pipe" // Capture both stdout and stderr
+                        encoding: "utf-8"
                     });
                     console.log(`Linting result for ${file}:\n${result}`);
                 }
                 catch (error) {
+                    console.log(`Errors found in ${file}:`);
                 }
             }
         }

@@ -15,12 +15,12 @@ function run() {
 
                 try {
                     const result = execSync(`bpmnlint "${filePath}"`, {
-                        encoding: "utf-8",
-                        stdio: "pipe" // Capture both stdout and stderr
+                        encoding: "utf-8"
                     });
 
                     console.log(`Linting result for ${file}:\n${result}`);
                 } catch (error) {
+                    console.log(`Errors found in ${file}:`);
                 }
             }
         }
