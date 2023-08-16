@@ -1,5 +1,5 @@
 name: "Test action"
-description: : "Testing action with NodeJs"
+description: "Testing action with NodeJs"
 author: "Kristoffer Högberg"
 
 runs:
