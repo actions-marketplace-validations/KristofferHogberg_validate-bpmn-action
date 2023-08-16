@@ -3,5 +3,5 @@ description: : "Testing action with NodeJs"
 author: "Kristoffer Högberg"
 
 runs:
-  using: node18
+  using: "node18"
   main: "dist/index.js"
