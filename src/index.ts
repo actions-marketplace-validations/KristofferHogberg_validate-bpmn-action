@@ -11,27 +11,34 @@ async function run() {
     try {
         const dirContents = fs.readdirSync(bpmnFiles, 'utf-8');
 
-        for (const file of dirContents) {
-            if (file.endsWith(".bpmn")) {
-                const filePath = path.join(bpmnFiles, file);
 
-                try {
-                    const result = execSync(`bpmnlint "${filePath}"`, {
-                        encoding: "utf-8",
-                        stdio: "pipe"
-                    });
+        const result = execSync("bpmnlint --version", {
+            encoding: "utf-8"
+        });
 
-                    if (result.trim() === "") {
-                        console.log(`No errors found in ${file}`);
-                    } else {
-                        console.log(`Errors found in ${file}:`);
-                        console.log(result);
-                    }
-                } catch (error) {
-                    console.log(`Errors found in ${file}:`);
-                }
-            }
-        }
+        console.log("bpmnlint version:", result);
+
+        // for (const file of dirContents) {
+        //     if (file.endsWith(".bpmn")) {
+        //         const filePath = path.join(bpmnFiles, file);
+        //
+        //         try {
+        //             const result = execSync(`bpmnlint "${filePath}"`, {
+        //                 encoding: "utf-8",
+        //                 stdio: "pipe"
+        //             });
+        //
+        //             if (result.trim() === "") {
+        //                 console.log(`No errors found in ${file}`);
+        //             } else {
+        //                 console.log(`Errors found in ${file}:`);
+        //                 console.log(result);
+        //             }
+        //         } catch (error) {
+        //             console.log(`Errors found in ${file}:`);
+        //         }
+        //     }
+        // }
     } catch (error) {
         setFailed((error as Error)?.message ?? "Unknown error");
     }
