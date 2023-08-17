@@ -15,9 +15,6 @@ jobs:
           custom-rules-folder: "custom_rules"
           bpmnlintrc-path: "BPMN"
 
-      - name: Checkout code
-        uses: actions/checkout@v3
-
       - name: Set up NodeJs
         uses: actions/setup-node@v3
         with:
@@ -25,7 +22,6 @@ jobs:
 
       - name: Install bpmnlint
         run: npm install -g bpmnlint
-
 
       - name: Search for rules folder
         run: find / -type d -name "rules" 2>/dev/null
