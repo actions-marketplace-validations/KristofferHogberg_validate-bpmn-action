@@ -1,17 +1,25 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { getInput, setFailed } from "@actions/core";
-import { execSync } from "child_process";
+import {execSync} from "child_process";
 
 async function run() {
     const customRules = getInput("custom-rules-folder");
     const bpmnFiles = getInput("bpmn-files-path");
-    const bpmnlintrcPath = getInput("bpmnlintrc-path"); // Update this line
+    const bpmnlintrc = getInput("bpmnlintrc-path");
 
     try {
-        const dirContents = fs.readdirSync(bpmnFiles, 'utf-8');
-        const bpmnlintrc = fs.readFileSync(bpmnlintrcPath, 'utf-8');
+        // console.log(`BPMN files: ${bpmnFiles}`);
+        // console.log(`Custom rules: ${customRules}`);
+        // console.log(`bpmnlintrc file: ${bpmnlintrc}`);
 
+        const result = execSync("npx bpmnlint --version", {
+            encoding: "utf-8"
+        });
+
+        console.log(result);
+
+        const dirContents = fs.readdirSync(bpmnFiles, 'utf-8');
         console.log(`Contents of ${bpmnFiles}:`, dirContents);
 
         for (const file of dirContents) {
@@ -20,34 +28,6 @@ async function run() {
             console.log(`Content of ${file}:`, fileContent);
         }
 
-        const result = execSync("npx bpmnlint --version", {
-            encoding: "utf-8"
-        });
-
-        console.log(result);
-
-
-
-        // for (const file of dirContents) {
-        //     if (file.endsWith(".bpmn")) {
-        //         const filePath = path.join(bpmnFiles, file);
-        //
-        //         try {
-        //             const result = execSync(`bpmnlint "${filePath}" --config "${bpmnlintrcPath}"`, {
-        //                 encoding: "utf-8"
-        //             });
-        //
-        //             if (result.trim() === "") {
-        //                 console.log(`No errors found in ${file}`);
-        //             } else {
-        //                 console.log(`Errors found in ${file}:`);
-        //                 console.log(result);
-        //             }
-        //         } catch (error) {
-        //             console.log(`Errors found in ${file}:`);
-        //         }
-        //     }
-        // }
     } catch (error) {
         setFailed((error as Error)?.message ?? "Unknown error");
     }

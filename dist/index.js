@@ -38,40 +38,22 @@ async function run() {
     var _a;
     const customRules = (0, core_1.getInput)("custom-rules-folder");
     const bpmnFiles = (0, core_1.getInput)("bpmn-files-path");
-    const bpmnlintrcPath = (0, core_1.getInput)("bpmnlintrc-path"); // Update this line
+    const bpmnlintrc = (0, core_1.getInput)("bpmnlintrc-path");
     try {
+        // console.log(`BPMN files: ${bpmnFiles}`);
+        // console.log(`Custom rules: ${customRules}`);
+        // console.log(`bpmnlintrc file: ${bpmnlintrc}`);
+        const result = (0, child_process_1.execSync)("npx bpmnlint --version", {
+            encoding: "utf-8"
+        });
+        console.log(result);
         const dirContents = fs.readdirSync(bpmnFiles, 'utf-8');
-        const bpmnlintrc = fs.readFileSync(bpmnlintrcPath, 'utf-8');
         console.log(`Contents of ${bpmnFiles}:`, dirContents);
         for (const file of dirContents) {
             const filePath = path.join(bpmnFiles, file);
             const fileContent = fs.readFileSync(filePath, 'utf-8');
             console.log(`Content of ${file}:`, fileContent);
         }
-        const result = (0, child_process_1.execSync)("npx bpmnlint --version", {
-            encoding: "utf-8"
-        });
-        console.log(result);
-        // for (const file of dirContents) {
-        //     if (file.endsWith(".bpmn")) {
-        //         const filePath = path.join(bpmnFiles, file);
-        //
-        //         try {
-        //             const result = execSync(`bpmnlint "${filePath}" --config "${bpmnlintrcPath}"`, {
-        //                 encoding: "utf-8"
-        //             });
-        //
-        //             if (result.trim() === "") {
-        //                 console.log(`No errors found in ${file}`);
-        //             } else {
-        //                 console.log(`Errors found in ${file}:`);
-        //                 console.log(result);
-        //             }
-        //         } catch (error) {
-        //             console.log(`Errors found in ${file}:`);
-        //         }
-        //     }
-        // }
     }
     catch (error) {
         (0, core_1.setFailed)((_a = error === null || error === void 0 ? void 0 : error.message) !== null && _a !== void 0 ? _a : "Unknown error");
