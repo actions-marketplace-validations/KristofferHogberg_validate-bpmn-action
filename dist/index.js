@@ -39,6 +39,7 @@ async function run() {
     const bpmnFiles = (0, core_1.getInput)("bpmn-files-path");
     const bpmnlintrc = (0, core_1.getInput)("bpmnlintrc-path");
     try {
+        console.log("TESTING TESTING");
         const dirContents = fs.readdirSync(bpmnFiles, 'utf-8');
         const result = (0, child_process_1.execSync)("bpmnlint --version", {
             encoding: "utf-8"
