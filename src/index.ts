@@ -31,7 +31,12 @@ async function run() {
         for (const file of bpmnlintConfig) {
             const filePath = path.join(bpmnlintrc, file);
             const fileContent = fs.readFileSync(filePath, 'utf-8');
-            console.log(`Content of ${file}:`, fileContent);
+
+            const bpmnlintrcFilePath = path.join(bpmnlintrc, '.bpmnlintrc');
+            const newFile = fs.writeFileSync(bpmnlintrcFilePath, filePath);
+
+            console.log(`NEW FILE CONTENT: ${newFile}`)
+            // console.log(`Content of ${file}:`, fileContent);
         }
 
         // Check bpmnlint version
