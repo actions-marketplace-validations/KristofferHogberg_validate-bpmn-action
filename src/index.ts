@@ -1,20 +1,30 @@
 import * as fs from 'fs';
+import * as path from 'path';
 import { getInput, setFailed } from "@actions/core";
 import { execSync } from "child_process";
 
 async function run() {
-    const bpmnFilesPath = getInput("bpmn-files-path");
+    const customRules = getInput("custom-rules-folder");
+    const bpmnFiles = getInput("bpmn-files-path");
+    const bpmnlintrcPath = getInput("bpmnlintrc-path"); // Update this line
 
     try {
-        const files = fs.readdirSync(bpmnFilesPath, "utf-8");
+        const dirContents = fs.readdirSync(bpmnFiles, 'utf-8');
 
-        for (const file of files) {
+        // Check if the .bpmnlintrc file exists at the specified path
+        const bpmnlintrcExists = fs.existsSync(bpmnlintrcPath);
+
+        if (!bpmnlintrcExists) {
+            console.error(`Could not locate .bpmnlintrc file at: ${bpmnlintrcPath}`);
+            return;
+        }
+
+        for (const file of dirContents) {
             if (file.endsWith(".bpmn")) {
-                const filePath = `${bpmnFilesPath}/${file}`;
+                const filePath = path.join(bpmnFiles, file);
 
                 try {
-                    // Run bpmnlint on the BPMN file
-                    const result = execSync(`npx bpmnlint "${filePath}"`, {
+                    const result = execSync(`bpmnlint "${filePath}" --config "${bpmnlintrcPath}"`, {
                         encoding: "utf-8"
                     });
 
@@ -30,6 +40,7 @@ async function run() {
             }
         }
     } catch (error) {
+        setFailed((error as Error)?.message ?? "Unknown error");
     }
 }
 
