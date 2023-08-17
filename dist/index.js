@@ -33,32 +33,18 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 const fs = __importStar(__nccwpck_require__(147));
 const path = __importStar(__nccwpck_require__(17));
 const core_1 = __nccwpck_require__(186);
-const child_process_1 = __nccwpck_require__(81);
 async function run() {
     var _a;
     const customRules = (0, core_1.getInput)("custom-rules-folder");
     const bpmnFiles = (0, core_1.getInput)("bpmn-files-path");
     const bpmnlintrc = (0, core_1.getInput)("bpmnlintrc-path");
     try {
-        // console.log(`BPMN files: ${bpmnFiles}`);
-        // console.log(`Custom rules: ${customRules}`);
-        // console.log(`bpmnlintrc file: ${bpmnlintrc}`);
-        // Check bpmnlint version
-        const bpmnlintVersion = (0, child_process_1.execSync)("npx bpmnlint --version", {
-            encoding: "utf-8"
-        });
-        console.log("bpmnlint version:", bpmnlintVersion);
-        const dirContents = fs.readdirSync(bpmnFiles, 'utf-8');
-        console.log(`Contents of ${bpmnFiles}:`, dirContents);
-        for (const file of dirContents) {
-            const filePath = path.join(bpmnFiles, file);
-            const fileContent = fs.readFileSync(filePath, 'utf-8');
-            // Run bpmnlint for each file
-            const lintResult = (0, child_process_1.execSync)(`npx bpmnlint lint ${filePath} --config ${bpmnlintrc} --rulesdir ${customRules}`, {
-                encoding: "utf-8"
-            });
-            console.log(`Linting result for ${file}:`, lintResult);
-        }
+        const models = fs.readdirSync(bpmnFiles, 'utf-8')
+            .filter(file => path.extname(file) === '.bpmn'); // Filter files by extension
+        console.log(`Contents of ${bpmnFiles}:`, models);
+        const bpmnConfig = fs.readdirSync(bpmnlintrc, 'utf-8')
+            .filter(file => path.extname(file) === '.bpmnlintrc'); // Filter files by extension
+        console.log(`Contents of ${bpmnFiles}:`, bpmnConfig);
     }
     catch (error) {
         (0, core_1.setFailed)((_a = error === null || error === void 0 ? void 0 : error.message) !== null && _a !== void 0 ? _a : "Unknown error");
@@ -2795,14 +2781,6 @@ exports["default"] = _default;
 
 "use strict";
 module.exports = require("assert");
-
-/***/ }),
-
-/***/ 81:
-/***/ ((module) => {
-
-"use strict";
-module.exports = require("child_process");
 
 /***/ }),
 

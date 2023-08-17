@@ -9,30 +9,17 @@ async function run() {
     const bpmnlintrc = getInput("bpmnlintrc-path");
 
     try {
-        // console.log(`BPMN files: ${bpmnFiles}`);
-        // console.log(`Custom rules: ${customRules}`);
-        // console.log(`bpmnlintrc file: ${bpmnlintrc}`);
 
-        // Check bpmnlint version
-        const bpmnlintVersion = execSync("npx bpmnlint --version", {
-            encoding: "utf-8"
-        });
-        console.log("bpmnlint version:", bpmnlintVersion);
+        const models = fs.readdirSync(bpmnFiles, 'utf-8')
+            .filter(file => path.extname(file) === '.bpmn'); // Filter files by extension
 
-        const dirContents = fs.readdirSync(bpmnFiles, 'utf-8');
-        console.log(`Contents of ${bpmnFiles}:`, dirContents);
+        console.log(`Contents of ${bpmnFiles}:`, models)
 
-        for (const file of dirContents) {
-            const filePath = path.join(bpmnFiles, file);
-            const fileContent = fs.readFileSync(filePath, 'utf-8');
+        const bpmnConfig = fs.readdirSync(bpmnlintrc, 'utf-8')
+            .filter(file => path.extname(file) === '.bpmnlintrc'); // Filter files by extension
 
-            // Run bpmnlint for each file
-            const lintResult = execSync(`npx bpmnlint lint ${filePath} --config ${bpmnlintrc} --rulesdir ${customRules}`, {
-                encoding: "utf-8"
-            });
-            console.log(`Linting result for ${file}:`, lintResult);
+        console.log(`Contents of ${bpmnFiles}:`, bpmnConfig);
 
-        }
 
     } catch (error) {
         setFailed((error as Error)?.message ?? "Unknown error");
