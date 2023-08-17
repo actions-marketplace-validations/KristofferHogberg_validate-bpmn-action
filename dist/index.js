@@ -40,6 +40,11 @@ async function run() {
     const bpmnFiles = (0, core_1.getInput)("bpmn-files-path");
     const bpmnlintrc = (0, core_1.getInput)("bpmnlintrc-path");
     try {
+        // CHECK BPMNLINT INSTALATION
+        const bpmnlintVersion = (0, child_process_1.execSync)("npx bpmnlint --version", {
+            encoding: "utf-8"
+        });
+        console.log("bpmnlint version:", bpmnlintVersion);
         // READ AND PRINT BPMN MODELS
         const models = fs.readdirSync(bpmnFiles, 'utf-8')
             .filter(file => path.extname(file) === '.bpmn'); // Filter files by extension
@@ -53,25 +58,20 @@ async function run() {
         const bpmnlintConfig = fs.readdirSync(bpmnlintrc, 'utf-8')
             .filter(file => file === '.bpmnlintrc');
         console.log(`Contents of ${bpmnlintrc}:`, bpmnlintConfig);
-        let fileContent;
+        let bpmnlintrcContent;
         for (const file of bpmnlintConfig) {
             const filePath = path.join(bpmnlintrc, file);
-            fileContent = fs.readFileSync(filePath, 'utf-8');
-            const bpmnlintrcFilePath = path.join(bpmnlintrc, '.bpmnlintrc');
-            fs.writeFileSync(bpmnlintrcFilePath, filePath);
-            // console.log(`Content of ${file}:`, fileContent);
+            bpmnlintrcContent = fs.readFileSync(filePath, 'utf-8');
+            const bpmnlintrcFilePath = path.join(bpmnFiles, '.bpmnlintrc'); // Save in bpmnFiles location
+            fs.writeFileSync(bpmnlintrcFilePath, bpmnlintrcContent);
+            console.log(`.bpmnlintrc file created in ${bpmnFiles} based on ${file}.`);
         }
-        console.log(fileContent);
-        // CHECK BPMNLINT INSTALATION
-        const bpmnlintVersion = (0, child_process_1.execSync)("npx bpmnlint --version", {
-            encoding: "utf-8"
-        });
-        console.log("bpmnlint version:", bpmnlintVersion);
+        console.log(bpmnlintrcContent);
         // LINT BPMN FILES USING .BPMNLINTRC
         for (const file of models) {
             const filePath = path.join(bpmnFiles, file);
             console.log(`Validating ${file}...`);
-            const lintResult = (0, child_process_1.execSync)(`npx bpmnlint lint ${filePath} --config .bpmnlintrc --rulesdir ${customRules}`, {
+            const lintResult = (0, child_process_1.execSync)(`npx bpmnlint lint ${filePath}`, {
                 encoding: "utf-8"
             });
             console.log(`Linting result for ${file}:`, lintResult);
