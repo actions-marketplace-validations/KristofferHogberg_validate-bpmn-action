@@ -1,6 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { getInput, setFailed } from "@actions/core";
+import {execSync} from "child_process";
 
 async function run() {
     const customRules = getInput("custom-rules-folder");
@@ -8,19 +9,29 @@ async function run() {
     const bpmnlintrc = getInput("bpmnlintrc-path");
 
     try {
-        // console.log(`BPMN files: ${bpmnFiles}`);
-        // console.log(`Custom rules: ${customRules}`);
-        // console.log(`bpmnlintrc file: ${bpmnlintrc}`);
-
         const dirContents = fs.readdirSync(bpmnFiles, 'utf-8');
-        // console.log(`Contents of ${bpmnFiles}:`, dirContents);
 
         for (const file of dirContents) {
-            const filePath = path.join(bpmnFiles, file);
-            const fileContent = fs.readFileSync(filePath, 'utf-8');
-            console.log(`Content of ${file}:`, fileContent);
-        }
+            if (file.endsWith(".bpmn")) {
+                const filePath = path.join(bpmnFiles, file);
 
+                try {
+                    const result = execSync(`bpmnlint "${filePath}"`, {
+                        encoding: "utf-8",
+                        stdio: "pipe"
+                    });
+
+                    if (result.trim() === "") {
+                        console.log(`No errors found in ${file}`);
+                    } else {
+                        console.log(`Errors found in ${file}:`);
+                        console.log(result);
+                    }
+                } catch (error) {
+                    console.log(`Errors found in ${file}:`);
+                }
+            }
+        }
     } catch (error) {
         setFailed((error as Error)?.message ?? "Unknown error");
     }

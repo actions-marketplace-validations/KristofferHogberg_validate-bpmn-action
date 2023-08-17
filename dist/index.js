@@ -33,21 +33,34 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 const fs = __importStar(__nccwpck_require__(147));
 const path = __importStar(__nccwpck_require__(17));
 const core_1 = __nccwpck_require__(186);
+const child_process_1 = __nccwpck_require__(81);
 async function run() {
     var _a;
     const customRules = (0, core_1.getInput)("custom-rules-folder");
     const bpmnFiles = (0, core_1.getInput)("bpmn-files-path");
     const bpmnlintrc = (0, core_1.getInput)("bpmnlintrc-path");
     try {
-        // console.log(`BPMN files: ${bpmnFiles}`);
-        // console.log(`Custom rules: ${customRules}`);
-        // console.log(`bpmnlintrc file: ${bpmnlintrc}`);
         const dirContents = fs.readdirSync(bpmnFiles, 'utf-8');
-        // console.log(`Contents of ${bpmnFiles}:`, dirContents);
         for (const file of dirContents) {
-            const filePath = path.join(bpmnFiles, file);
-            const fileContent = fs.readFileSync(filePath, 'utf-8');
-            console.log(`Content of ${file}:`, fileContent);
+            if (file.endsWith(".bpmn")) {
+                const filePath = path.join(bpmnFiles, file);
+                try {
+                    const result = (0, child_process_1.execSync)(`bpmnlint "${filePath}"`, {
+                        encoding: "utf-8",
+                        stdio: "pipe"
+                    });
+                    if (result.trim() === "") {
+                        console.log(`No errors found in ${file}`);
+                    }
+                    else {
+                        console.log(`Errors found in ${file}:`);
+                        console.log(result);
+                    }
+                }
+                catch (error) {
+                    console.log(`Errors found in ${file}:`);
+                }
+            }
         }
     }
     catch (error) {
@@ -2785,6 +2798,14 @@ exports["default"] = _default;
 
 "use strict";
 module.exports = require("assert");
+
+/***/ }),
+
+/***/ 81:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("child_process");
 
 /***/ }),
 
