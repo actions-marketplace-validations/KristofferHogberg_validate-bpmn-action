@@ -9,18 +9,20 @@ async function run() {
     const bpmnlintrc = getInput("bpmnlintrc-path");
 
     try {
-        // Copy or create .bpmnlintrc in the same directory as bpmn files
-        const bpmnlintConfigPath = path.join(bpmnFiles, '.bpmnlintrc');
-        if (!fs.existsSync(bpmnlintConfigPath)) {
-            const bpmnlintConfigContent = {
-                extends: "bpmnlint:recommended"
-            };
-            fs.writeFileSync(bpmnlintConfigPath, JSON.stringify(bpmnlintConfigContent, null, 2));
+        const dirContents = fs.readdirSync(bpmnFiles, 'utf-8');
+        console.log(`Contents of ${bpmnFiles}:`, dirContents);
+
+        const bpmnlintrcFiles = dirContents.filter(file => file.endsWith('.bpmnlintrc'));
+
+        for (const file of bpmnlintrcFiles) {
+            const filePath = path.join(bpmnFiles, file);
+            const fileContent = fs.readFileSync(filePath, 'utf-8');
+            console.log(`Content of ${file}:`, fileContent);
         }
 
-        console.log(bpmnlintConfigPath);
+        console.log(bpmnlintrcFiles);
 
-        const result = execSync("bpmnlint --version", {
+        const result = execSync("npx -p bpmnlint bpmnlint --version", {
             encoding: "utf-8"
         });
 
