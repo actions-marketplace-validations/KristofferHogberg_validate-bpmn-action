@@ -9,34 +9,35 @@ async function run() {
     const bpmnlintrc = getInput("bpmnlintrc-path");
 
     try {
-        const dirContents = fs.readdirSync(bpmnFiles, 'utf-8');
-        console.log(`Contents of ${bpmnFiles}:`, dirContents);
-
-        const bpmnlintrcFiles = dirContents.filter(file => file.endsWith('.bpmnlintrc'));
-
-        for (const file of bpmnlintrcFiles) {
-            const filePath = path.join(bpmnFiles, file);
-            const fileContent = fs.readFileSync(filePath, 'utf-8');
-            console.log(`Content of ${file}:`, fileContent);
-        }
-
-        console.log(bpmnlintrcFiles);
-
-        const result = execSync("npx -p bpmnlint bpmnlint --version", {
-            encoding: "utf-8"
+        // Copy custom rules
+        execSync(`cp -r ${customRules}/* /opt/hostedtoolcache/node/18.17.0/x64/lib/node_modules/bpmnlint/rules/`, {
+            stdio: "inherit",
+            cwd: process.cwd()
         });
 
-        console.log(result);
-        //
-        // const dirContents = fs.readdirSync(bpmnFiles, 'utf-8');
-        // console.log(`Contents of ${bpmnFiles}:`, dirContents);
-        //
-        // for (const file of dirContents) {
-        //     const filePath = path.join(bpmnFiles, file);
-        //     const fileContent = fs.readFileSync(filePath, 'utf-8');
-        //     console.log(`Content of ${file}:`, fileContent);
-        // }
+        // List all available rules
+        execSync("ls -al /opt/hostedtoolcache/node/18.17.0/x64/lib/node_modules/bpmnlint/rules", {
+            stdio: "inherit",
+            cwd: process.cwd()
+        });
 
+        // Read and create .bpmnlintrc configuration file
+        execSync(`cat "${bpmnlintrc}" > .bpmnlintrc.txt && mv .bpmnlintrc.txt .bpmnlintrc`, {
+            stdio: "inherit",
+            cwd: process.cwd()
+        });
+
+        // Run BPMN validation and output result
+        for (const file of fs.readdirSync(bpmnFiles, 'utf-8')) {
+            const filePath = path.join(bpmnFiles, file);
+            if (file.endsWith('.bpmn')) {
+                if (!execSync(`bpmnlint "${filePath}"`, { stdio: "inherit", cwd: process.cwd() })) {
+                    console.log(`No errors found in ${file}`);
+                } else {
+                    console.log(`Errors found in ${file}`);
+                }
+            }
+        }
     } catch (error) {
         setFailed((error as Error)?.message ?? "Unknown error");
     }
