@@ -27,17 +27,17 @@ async function run() {
 
         console.log(`Contents of ${bpmnFiles}:`, bpmnlintConfig);
 
-
+        let fileContent;
         for (const file of bpmnlintConfig) {
             const filePath = path.join(bpmnlintrc, file);
-            const fileContent = fs.readFileSync(filePath, 'utf-8');
+            fileContent = fs.readFileSync(filePath, 'utf-8');
 
             const bpmnlintrcFilePath = path.join(bpmnlintrc, '.bpmnlintrc');
-            const newFile = fs.writeFileSync(bpmnlintrcFilePath, filePath);
-
-            console.log(`NEW FILE CONTENT: ${newFile}`)
+            fs.writeFileSync(bpmnlintrcFilePath, filePath);
             // console.log(`Content of ${file}:`, fileContent);
         }
+
+        console.log(fileContent);
 
         // Check bpmnlint version
         const bpmnlintVersion = execSync("npx bpmnlint --version", {
