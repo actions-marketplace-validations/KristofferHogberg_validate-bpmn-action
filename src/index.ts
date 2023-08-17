@@ -10,7 +10,7 @@ async function run() {
 
     try {
         const dirContents = fs.readdirSync(bpmnFiles, 'utf-8');
-        const bpmnlintrc = fs.readdirSync(bpmnlintrcPath, 'utf-8');
+        const bpmnlintrc = fs.readFileSync(bpmnlintrcPath, 'utf-8');
 
         console.log(bpmnlintrc);
 

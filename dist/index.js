@@ -40,7 +40,7 @@ async function run() {
     const bpmnlintrcPath = (0, core_1.getInput)("bpmnlintrc-path"); // Update this line
     try {
         const dirContents = fs.readdirSync(bpmnFiles, 'utf-8');
-        const bpmnlintrc = fs.readdirSync(bpmnlintrcPath, 'utf-8');
+        const bpmnlintrc = fs.readFileSync(bpmnlintrcPath, 'utf-8');
         console.log(bpmnlintrc);
         const result = (0, child_process_1.execSync)("npx bpmnlint --version", {
             encoding: "utf-8"
