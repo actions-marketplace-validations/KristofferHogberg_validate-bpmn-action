@@ -49,6 +49,8 @@ async function run() {
             const folderPath = path.dirname(path.join(bpmnFiles, file));
             const bpmnlintrcFilePath = path.join(folderPath, '.bpmnlintrc');
             fs.writeFileSync(bpmnlintrcFilePath, bpmnlintrcContent);
+            console.log(folderPath)
+
             console.log(`.bpmnlintrc file created in ${folderPath}.`);
         }
 
