@@ -15,10 +15,10 @@ async function run() {
 
         console.log(`Contents of ${bpmnFiles}:`, models)
 
-        const bpmnConfig = fs.readdirSync(bpmnlintrc, 'utf-8')
-            .filter(file => path.extname(file) === '.bpmnlintrc'); // Filter files by extension
+        const bpmnlintConfig = fs.readdirSync(bpmnlintrc, 'utf-8')
+            .filter(file => file === '.bpmnlintrc');
 
-        console.log(`Contents of ${bpmnFiles}:`, bpmnConfig);
+        console.log(`Contents of ${bpmnFiles}:`, bpmnlintConfig);
 
 
     } catch (error) {
