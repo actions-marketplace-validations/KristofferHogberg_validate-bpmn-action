@@ -15,11 +15,15 @@ async function run() {
 
         console.log(`Contents of ${bpmnFiles}:`, models)
 
+        for (const file of models) {
+            const fileContent = fs.readFileSync(file, 'utf-8');
+            console.log(`Content of ${file}:`, fileContent);
+        }
+
         const bpmnlintConfig = fs.readdirSync(bpmnlintrc, 'utf-8')
             .filter(file => file === '.bpmnlintrc');
 
         console.log(`Contents of ${bpmnFiles}:`, bpmnlintConfig);
-
 
     } catch (error) {
         setFailed((error as Error)?.message ?? "Unknown error");
