@@ -9,7 +9,7 @@ async function run() {
     const bpmnlintrc = getInput("bpmnlintrc-path");
 
     try {
-
+        // READ AND PRINT BPMN MODELS
         const models = fs.readdirSync(bpmnFiles, 'utf-8')
             .filter(file => path.extname(file) === '.bpmn'); // Filter files by extension
 
@@ -21,7 +21,7 @@ async function run() {
             console.log(`Content of ${file}:`, fileContent);
         }
 
-
+        // READ AND CREATE .BPMNLINTRC
         const bpmnlintConfig = fs.readdirSync(bpmnlintrc, 'utf-8')
             .filter(file => file === '.bpmnlintrc');
 
@@ -39,11 +39,23 @@ async function run() {
 
         console.log(fileContent);
 
-        // Check bpmnlint version
+        // CHECK BPMNLINT INSTALATION
         const bpmnlintVersion = execSync("npx bpmnlint --version", {
             encoding: "utf-8"
         });
         console.log("bpmnlint version:", bpmnlintVersion);
+
+        // LINT BPMN FILES USING .BPMNLINTRC
+        for (const file of models) {
+            const filePath = path.join(bpmnFiles, file);
+
+            console.log(`Validating ${file}...`);
+            const lintResult = execSync(`npx bpmnlint lint ${filePath} --config .bpmnlintrc --rulesdir ${customRules}`, {
+                encoding: "utf-8"
+            });
+            console.log(`Linting result for ${file}:`, lintResult);
+        }
+
 
     } catch (error) {
         setFailed((error as Error)?.message ?? "Unknown error");
