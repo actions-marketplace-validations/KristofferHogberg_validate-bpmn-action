@@ -33,6 +33,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 const fs = __importStar(__nccwpck_require__(147));
 const path = __importStar(__nccwpck_require__(17));
 const core_1 = __nccwpck_require__(186);
+const child_process_1 = __nccwpck_require__(81);
 async function run() {
     var _a;
     const customRules = (0, core_1.getInput)("custom-rules-folder");
@@ -55,6 +56,11 @@ async function run() {
             const fileContent = fs.readFileSync(filePath, 'utf-8');
             console.log(`Content of ${file}:`, fileContent);
         }
+        // Check bpmnlint version
+        const bpmnlintVersion = (0, child_process_1.execSync)("npx bpmnlint --version", {
+            encoding: "utf-8"
+        });
+        console.log("bpmnlint version:", bpmnlintVersion);
     }
     catch (error) {
         (0, core_1.setFailed)((_a = error === null || error === void 0 ? void 0 : error.message) !== null && _a !== void 0 ? _a : "Unknown error");
@@ -2791,6 +2797,14 @@ exports["default"] = _default;
 
 "use strict";
 module.exports = require("assert");
+
+/***/ }),
+
+/***/ 81:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("child_process");
 
 /***/ }),
 

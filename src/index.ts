@@ -34,6 +34,12 @@ async function run() {
             console.log(`Content of ${file}:`, fileContent);
         }
 
+        // Check bpmnlint version
+        const bpmnlintVersion = execSync("npx bpmnlint --version", {
+            encoding: "utf-8"
+        });
+        console.log("bpmnlint version:", bpmnlintVersion);
+
     } catch (error) {
         setFailed((error as Error)?.message ?? "Unknown error");
     }
