@@ -13,3 +13,6 @@ jobs:
           bpmn-files-path: "BPMN/"
           custom-rules-folder: "<path-to-custom-rules-folder>"
           bpmnlintrc-path: "<path-to-bpmnlintrc-config"
+          
+      - name: Search for rules folder
+        run: find / -type d -name "rules" 2>/dev/null
