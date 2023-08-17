@@ -33,39 +33,21 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 const fs = __importStar(__nccwpck_require__(147));
 const path = __importStar(__nccwpck_require__(17));
 const core_1 = __nccwpck_require__(186);
-const child_process_1 = __nccwpck_require__(81);
 async function run() {
     var _a;
     const customRules = (0, core_1.getInput)("custom-rules-folder");
     const bpmnFiles = (0, core_1.getInput)("bpmn-files-path");
     const bpmnlintrc = (0, core_1.getInput)("bpmnlintrc-path");
     try {
-        // Copy custom rules
-        (0, child_process_1.execSync)(`cp -r ${customRules}/* /opt/hostedtoolcache/node/18.17.0/x64/lib/node_modules/bpmnlint/rules/`, {
-            stdio: "inherit",
-            cwd: process.cwd()
-        });
-        // List all available rules
-        (0, child_process_1.execSync)("ls -al /opt/hostedtoolcache/node/18.17.0/x64/lib/node_modules/bpmnlint/rules", {
-            stdio: "inherit",
-            cwd: process.cwd()
-        });
-        // Read and create .bpmnlintrc configuration file
-        (0, child_process_1.execSync)(`cat "${bpmnlintrc}" > .bpmnlintrc.txt && mv .bpmnlintrc.txt .bpmnlintrc`, {
-            stdio: "inherit",
-            cwd: process.cwd()
-        });
-        // Run BPMN validation and output result
-        for (const file of fs.readdirSync(bpmnFiles, 'utf-8')) {
+        console.log(`BPMN files: ${bpmnFiles}`);
+        console.log(`Custom rules: ${customRules}`);
+        console.log(`bpmnlintrc file: ${bpmnlintrc}`);
+        const dirContents = fs.readdirSync(bpmnFiles, 'utf-8');
+        console.log(`Contents of ${bpmnFiles}:`, dirContents);
+        for (const file of dirContents) {
             const filePath = path.join(bpmnFiles, file);
-            if (file.endsWith('.bpmn')) {
-                if (!(0, child_process_1.execSync)(`bpmnlint "${filePath}"`, { stdio: "inherit", cwd: process.cwd() })) {
-                    console.log(`No errors found in ${file}`);
-                }
-                else {
-                    console.log(`Errors found in ${file}`);
-                }
-            }
+            const fileContent = fs.readFileSync(filePath, 'utf-8');
+            console.log(`Content of ${file}:`, fileContent);
         }
     }
     catch (error) {
@@ -2803,14 +2785,6 @@ exports["default"] = _default;
 
 "use strict";
 module.exports = require("assert");
-
-/***/ }),
-
-/***/ 81:
-/***/ ((module) => {
-
-"use strict";
-module.exports = require("child_process");
 
 /***/ }),
 

@@ -15,13 +15,3 @@ jobs:
           custom-rules-folder: "custom_rules"
           bpmnlintrc-path: "BPMN"
 
-      - name: Set up NodeJs
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18.17.0
-
-      - name: Install bpmnlint
-        run: npm install -g bpmnlint
-
-      - name: Search for rules folder
-        run: find / -type d -name "rules" 2>/dev/null
