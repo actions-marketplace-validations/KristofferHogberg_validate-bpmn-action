@@ -1,30 +1,28 @@
-import { getInput } from "@actions/core";
-import * as fs from "fs";
-import * as path from "path";
-import { execSync } from "child_process";
+import * as fs from 'fs';
+import * as path from 'path';
+import { getInput, setFailed } from "@actions/core";
 
-function run() {
-    const bpmnFilesPath = getInput("bpmn-files-path");
+async function run() {
+    const customRules = getInput("custom-rules-folder");
+    const bpmnFiles = getInput("bpmn-files-path");
+    const bpmnlintrc = getInput("bpmnlintrc-path");
 
     try {
-        const files = fs.readdirSync(bpmnFilesPath, "utf-8");
+        console.log(`BPMN files: ${bpmnFiles}`);
+        console.log(`Custom rules: ${customRules}`);
+        console.log(`bpmnlintrc file: ${bpmnlintrc}`);
 
-        for (const file of files) {
-            if (file.endsWith(".bpmn")) {
-                const filePath = path.join(bpmnFilesPath, file);
+        const dirContents = fs.readdirSync(bpmnFiles, 'utf-8');
+        console.log(`Contents of ${bpmnFiles}:`, dirContents);
 
-                try {
-                    const result = execSync(`bpmnlint "${filePath}"`, {
-                        encoding: "utf-8"
-                    });
-
-                    console.log(`Linting result for ${file}:\n${result}`);
-                } catch (error) {
-                    console.log(`Errors found in ${file}:`);
-                }
-            }
+        for (const file of dirContents) {
+            const filePath = path.join(bpmnFiles, file);
+            const fileContent = fs.readFileSync(filePath, 'utf-8');
+            console.log(`Content of ${file}:`, fileContent);
         }
+
     } catch (error) {
+        setFailed((error as Error)?.message ?? "Unknown error");
     }
 }
 
