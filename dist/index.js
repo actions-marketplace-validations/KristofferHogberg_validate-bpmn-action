@@ -31,7 +31,6 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const fs = __importStar(__nccwpck_require__(147));
-const path = __importStar(__nccwpck_require__(17));
 const core_1 = __nccwpck_require__(186);
 const child_process_1 = __nccwpck_require__(81);
 async function run() {
@@ -41,32 +40,32 @@ async function run() {
     const bpmnlintrcPath = (0, core_1.getInput)("bpmnlintrc-path"); // Update this line
     try {
         const dirContents = fs.readdirSync(bpmnFiles, 'utf-8');
-        // Check if the .bpmnlintrc file exists at the specified path
-        const bpmnlintrcExists = fs.existsSync(bpmnlintrcPath);
-        if (!bpmnlintrcExists) {
-            console.error(`Could not locate .bpmnlintrc file at: ${bpmnlintrcPath}`);
-            return;
-        }
-        for (const file of dirContents) {
-            if (file.endsWith(".bpmn")) {
-                const filePath = path.join(bpmnFiles, file);
-                try {
-                    const result = (0, child_process_1.execSync)(`bpmnlint "${filePath}" --config "${bpmnlintrcPath}"`, {
-                        encoding: "utf-8"
-                    });
-                    if (result.trim() === "") {
-                        console.log(`No errors found in ${file}`);
-                    }
-                    else {
-                        console.log(`Errors found in ${file}:`);
-                        console.log(result);
-                    }
-                }
-                catch (error) {
-                    console.log(`Errors found in ${file}:`);
-                }
-            }
-        }
+        const bpmnlintrc = fs.readdirSync(bpmnlintrcPath, 'utf-8');
+        console.log(bpmnlintrc);
+        const result = (0, child_process_1.execSync)("npx bpmnlint --version", {
+            encoding: "utf-8"
+        });
+        console.log(result);
+        // for (const file of dirContents) {
+        //     if (file.endsWith(".bpmn")) {
+        //         const filePath = path.join(bpmnFiles, file);
+        //
+        //         try {
+        //             const result = execSync(`bpmnlint "${filePath}" --config "${bpmnlintrcPath}"`, {
+        //                 encoding: "utf-8"
+        //             });
+        //
+        //             if (result.trim() === "") {
+        //                 console.log(`No errors found in ${file}`);
+        //             } else {
+        //                 console.log(`Errors found in ${file}:`);
+        //                 console.log(result);
+        //             }
+        //         } catch (error) {
+        //             console.log(`Errors found in ${file}:`);
+        //         }
+        //     }
+        // }
     }
     catch (error) {
         (0, core_1.setFailed)((_a = error === null || error === void 0 ? void 0 : error.message) !== null && _a !== void 0 ? _a : "Unknown error");
