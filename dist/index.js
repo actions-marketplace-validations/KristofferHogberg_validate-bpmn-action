@@ -75,7 +75,7 @@ async function run() {
         for (const file of models) {
             const filePath = path.join(bpmnFiles, file);
             console.log(`Validating ${file}...`);
-            const lintResult = (0, child_process_1.execSync)(`npx bpmnlint lint ${filePath} --config ${path.join(bpmnFiles, '.bpmnlintrc')} --rulesdir ${customRules}`, {
+            const lintResult = (0, child_process_1.execSync)(`npx bpmnlint lint ${filePath}`, {
                 encoding: "utf-8"
             });
             console.log(`Linting result for ${file}:`, lintResult);

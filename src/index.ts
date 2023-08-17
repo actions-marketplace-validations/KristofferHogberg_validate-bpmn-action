@@ -55,12 +55,11 @@ async function run() {
             const filePath = path.join(bpmnFiles, file);
 
             console.log(`Validating ${file}...`);
-            const lintResult = execSync(`npx bpmnlint lint ${filePath} --config ${path.join(bpmnFiles, '.bpmnlintrc')} --rulesdir ${customRules}`, {
+            const lintResult = execSync(`npx bpmnlint lint ${filePath}`, {
                 encoding: "utf-8"
             });
             console.log(`Linting result for ${file}:`, lintResult);
         }
-
 
 
     } catch (error) {
