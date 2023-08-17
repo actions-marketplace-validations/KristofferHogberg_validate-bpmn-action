@@ -25,7 +25,7 @@ async function run() {
         const bpmnlintConfig = fs.readdirSync(bpmnlintrc, 'utf-8')
             .filter(file => file === '.bpmnlintrc');
 
-        console.log(`Contents of ${bpmnFiles}:`, bpmnlintConfig);
+        console.log(`Contents of ${bpmnlintrc}:`, bpmnlintConfig);
 
         let fileContent;
         for (const file of bpmnlintConfig) {
