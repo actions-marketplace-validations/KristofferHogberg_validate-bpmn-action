@@ -30,30 +30,28 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const core_1 = __nccwpck_require__(186);
 const fs = __importStar(__nccwpck_require__(147));
 const path = __importStar(__nccwpck_require__(17));
-const child_process_1 = __nccwpck_require__(81);
-function run() {
-    const bpmnFilesPath = (0, core_1.getInput)("bpmn-files-path");
+const core_1 = __nccwpck_require__(186);
+async function run() {
+    var _a;
+    const customRules = (0, core_1.getInput)("custom-rules-folder");
+    const bpmnFiles = (0, core_1.getInput)("bpmn-files-path");
+    const bpmnlintrc = (0, core_1.getInput)("bpmnlintrc-path");
     try {
-        const files = fs.readdirSync(bpmnFilesPath, "utf-8");
-        for (const file of files) {
-            if (file.endsWith(".bpmn")) {
-                const filePath = path.join(bpmnFilesPath, file);
-                try {
-                    const result = (0, child_process_1.execSync)(`bpmnlint "${filePath}"`, {
-                        encoding: "utf-8"
-                    });
-                    console.log(`Linting result for ${file}:\n${result}`);
-                }
-                catch (error) {
-                    console.log(`Errors found in ${file}:`);
-                }
-            }
+        console.log(`BPMN files: ${bpmnFiles}`);
+        console.log(`Custom rules: ${customRules}`);
+        console.log(`bpmnlintrc file: ${bpmnlintrc}`);
+        const dirContents = fs.readdirSync(bpmnFiles, 'utf-8');
+        console.log(`Contents of ${bpmnFiles}:`, dirContents);
+        for (const file of dirContents) {
+            const filePath = path.join(bpmnFiles, file);
+            const fileContent = fs.readFileSync(filePath, 'utf-8');
+            console.log(`Content of ${file}:`, fileContent);
         }
     }
     catch (error) {
+        (0, core_1.setFailed)((_a = error === null || error === void 0 ? void 0 : error.message) !== null && _a !== void 0 ? _a : "Unknown error");
     }
 }
 run();
@@ -2787,14 +2785,6 @@ exports["default"] = _default;
 
 "use strict";
 module.exports = require("assert");
-
-/***/ }),
-
-/***/ 81:
-/***/ ((module) => {
-
-"use strict";
-module.exports = require("child_process");
 
 /***/ }),
 
