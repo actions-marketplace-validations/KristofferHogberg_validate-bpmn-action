@@ -58,20 +58,24 @@ async function run() {
         const bpmnlintConfig = fs.readdirSync(bpmnlintrc, 'utf-8')
             .filter(file => file === '.bpmnlintrc');
         console.log(`Contents of ${bpmnlintrc}:`, bpmnlintConfig);
-        let bpmnlintrcContent;
+        let bpmnlintrcContent = '';
         for (const file of bpmnlintConfig) {
             const filePath = path.join(bpmnlintrc, file);
             bpmnlintrcContent = fs.readFileSync(filePath, 'utf-8');
-            const bpmnlintrcFilePath = path.join(bpmnFiles, '.bpmnlintrc'); // Save in bpmnFiles location
-            fs.writeFileSync(bpmnlintrcFilePath, bpmnlintrcContent);
-            console.log(`.bpmnlintrc file created in ${bpmnFiles} based on ${file}.`);
+            break; // Only use the first .bpmnlintrc file found
         }
-        console.log(bpmnlintrcContent);
+        // Write bpmnlintrc content to each BPMN file folder
+        for (const file of models) {
+            const folderPath = path.dirname(path.join(bpmnFiles, file));
+            const bpmnlintrcFilePath = path.join(folderPath, '.bpmnlintrc');
+            fs.writeFileSync(bpmnlintrcFilePath, bpmnlintrcContent);
+            console.log(`.bpmnlintrc file created in ${folderPath}.`);
+        }
         // LINT BPMN FILES USING .BPMNLINTRC
         for (const file of models) {
             const filePath = path.join(bpmnFiles, file);
             console.log(`Validating ${file}...`);
-            const lintResult = (0, child_process_1.execSync)(`npx bpmnlint lint ${filePath}`, {
+            const lintResult = (0, child_process_1.execSync)(`npx bpmnlint lint ${filePath} --config ${path.join(bpmnFiles, '.bpmnlintrc')} --rulesdir ${customRules}`, {
                 encoding: "utf-8"
             });
             console.log(`Linting result for ${file}:`, lintResult);
