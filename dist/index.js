@@ -39,11 +39,11 @@ async function run() {
     const bpmnFiles = (0, core_1.getInput)("bpmn-files-path");
     const bpmnlintrc = (0, core_1.getInput)("bpmnlintrc-path");
     try {
-        console.log(`BPMN files: ${bpmnFiles}`);
-        console.log(`Custom rules: ${customRules}`);
-        console.log(`bpmnlintrc file: ${bpmnlintrc}`);
+        // console.log(`BPMN files: ${bpmnFiles}`);
+        // console.log(`Custom rules: ${customRules}`);
+        // console.log(`bpmnlintrc file: ${bpmnlintrc}`);
         const dirContents = fs.readdirSync(bpmnFiles, 'utf-8');
-        console.log(`Contents of ${bpmnFiles}:`, dirContents);
+        // console.log(`Contents of ${bpmnFiles}:`, dirContents);
         for (const file of dirContents) {
             const filePath = path.join(bpmnFiles, file);
             const fileContent = fs.readFileSync(filePath, 'utf-8');
@@ -54,7 +54,7 @@ async function run() {
         (0, core_1.setFailed)((_a = error === null || error === void 0 ? void 0 : error.message) !== null && _a !== void 0 ? _a : "Unknown error");
     }
 }
-run();
+// run();
 
 
 /***/ }),
