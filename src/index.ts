@@ -13,10 +13,9 @@ async function run() {
         console.log("TESTING TESTING");
         const dirContents = fs.readdirSync(bpmnFiles, 'utf-8');
 
-        const result = execSync("bpmnlint --version", {
+        const result = execSync("npx bpmnlint --version", {
             encoding: "utf-8"
         });
-
         console.log("bpmnlint version:", result);
 
         // for (const file of dirContents) {
