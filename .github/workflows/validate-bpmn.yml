@@ -1,7 +1,7 @@
 name: "Test TS Action"
 
 on:
-  workflow_dispatch
+  workflow_dispatch:
 
 jobs:
   test:
@@ -14,7 +14,6 @@ jobs:
           bpmn-files-path: "BPMN"
           custom-rules-folder: "custom_rules"
           bpmnlintrc-path: "BPMN"
-
 
       - name: Checkout code
         uses: actions/checkout@v3
