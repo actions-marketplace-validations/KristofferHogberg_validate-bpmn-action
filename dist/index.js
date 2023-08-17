@@ -40,32 +40,24 @@ async function run() {
     const bpmnFiles = (0, core_1.getInput)("bpmn-files-path");
     const bpmnlintrc = (0, core_1.getInput)("bpmnlintrc-path");
     try {
-        console.log("TESTING TESTING");
-        const dirContents = fs.readdirSync(bpmnFiles, 'utf-8');
-        const result = (0, child_process_1.execSync)("npx bpmnlint --version", {
+        // console.log(`BPMN files: ${bpmnFiles}`);
+        // console.log(`Custom rules: ${customRules}`);
+        // console.log(`bpmnlintrc file: ${bpmnlintrc}`);
+        // Check bpmnlint version
+        const bpmnlintVersion = (0, child_process_1.execSync)("npx bpmnlint --version", {
             encoding: "utf-8"
         });
-        console.log("bpmnlint version:", result);
+        console.log("bpmnlint version:", bpmnlintVersion);
+        const dirContents = fs.readdirSync(bpmnFiles, 'utf-8');
+        console.log(`Contents of ${bpmnFiles}:`, dirContents);
         for (const file of dirContents) {
-            if (file.endsWith(".bpmn")) {
-                const filePath = path.join(bpmnFiles, file);
-                try {
-                    const result = (0, child_process_1.execSync)(`bpmnlint "${filePath}"`, {
-                        encoding: "utf-8",
-                        stdio: "pipe"
-                    });
-                    if (result.trim() === "") {
-                        console.log(`No errors found in ${file}`);
-                    }
-                    else {
-                        console.log(`Errors found in ${file}:`);
-                        console.log(result);
-                    }
-                }
-                catch (error) {
-                    console.log(`Errors found in ${file}:`);
-                }
-            }
+            const filePath = path.join(bpmnFiles, file);
+            const fileContent = fs.readFileSync(filePath, 'utf-8');
+            // Run bpmnlint for each file
+            const lintResult = (0, child_process_1.execSync)(`npx bpmnlint lint ${filePath} --config ${bpmnlintrc} --rulesdir ${customRules}`, {
+                encoding: "utf-8"
+            });
+            console.log(`Linting result for ${file}:`, lintResult);
         }
     }
     catch (error) {
