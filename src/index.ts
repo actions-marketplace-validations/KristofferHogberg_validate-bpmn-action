@@ -12,7 +12,13 @@ async function run() {
         const dirContents = fs.readdirSync(bpmnFiles, 'utf-8');
         const bpmnlintrc = fs.readFileSync(bpmnlintrcPath, 'utf-8');
 
-        console.log(bpmnlintrc);
+        console.log(`Contents of ${bpmnFiles}:`, dirContents);
+
+        for (const file of dirContents) {
+            const filePath = path.join(bpmnFiles, file);
+            const fileContent = fs.readFileSync(filePath, 'utf-8');
+            console.log(`Content of ${file}:`, fileContent);
+        }
 
         const result = execSync("npx bpmnlint --version", {
             encoding: "utf-8"

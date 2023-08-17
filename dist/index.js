@@ -31,6 +31,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const fs = __importStar(__nccwpck_require__(147));
+const path = __importStar(__nccwpck_require__(17));
 const core_1 = __nccwpck_require__(186);
 const child_process_1 = __nccwpck_require__(81);
 async function run() {
@@ -41,7 +42,12 @@ async function run() {
     try {
         const dirContents = fs.readdirSync(bpmnFiles, 'utf-8');
         const bpmnlintrc = fs.readFileSync(bpmnlintrcPath, 'utf-8');
-        console.log(bpmnlintrc);
+        console.log(`Contents of ${bpmnFiles}:`, dirContents);
+        for (const file of dirContents) {
+            const filePath = path.join(bpmnFiles, file);
+            const fileContent = fs.readFileSync(filePath, 'utf-8');
+            console.log(`Content of ${file}:`, fileContent);
+        }
         const result = (0, child_process_1.execSync)("npx bpmnlint --version", {
             encoding: "utf-8"
         });
