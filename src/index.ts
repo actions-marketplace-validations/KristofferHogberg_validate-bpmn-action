@@ -42,6 +42,8 @@ async function run() {
             break; // Only use the first .bpmnlintrc file found
         }
 
+        console.log(bpmnlintrcContent);
+
         // Write bpmnlintrc content to each BPMN file folder
         for (const file of models) {
             const folderPath = path.dirname(path.join(bpmnFiles, file));
