@@ -1,22 +1,19 @@
 import * as fs from 'fs';
-import * as path from 'path';
 import { getInput, setFailed } from "@actions/core";
-import { execSync } from "child_process"; // Import execSync for running commands
+import { execSync } from "child_process";
 
 async function run() {
-    const customRules = getInput("custom-rules-folder");
-    const bpmnFiles = getInput("bpmn-files-path");
-    const bpmnlintrc = getInput("bpmnlintrc-path");
+    const bpmnFilesPath = getInput("bpmn-files-path");
 
     try {
-        const dirContents = fs.readdirSync(bpmnFiles, 'utf-8');
+        const files = fs.readdirSync(bpmnFilesPath, "utf-8");
 
-        // Run bpmnlint command for each file
-        for (const file of dirContents) {
+        for (const file of files) {
             if (file.endsWith(".bpmn")) {
-                const filePath = path.join(bpmnFiles, file);
+                const filePath = `${bpmnFilesPath}/${file}`;
 
                 try {
+                    // Run bpmnlint on the BPMN file
                     const result = execSync(`npx bpmnlint "${filePath}"`, {
                         encoding: "utf-8"
                     });
@@ -33,7 +30,6 @@ async function run() {
             }
         }
     } catch (error) {
-        setFailed((error as Error)?.message ?? "Unknown error");
     }
 }
 
