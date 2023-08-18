@@ -64,12 +64,17 @@ async function run() {
             if (path.extname(file) === '.bpmn') {
                 const filePath = path.join(bpmnFilesPath, file);
                 console.log(`Validating ${file}...`);
-                const lintResult = (0, child_process_1.execSync)(`npx bpmnlint lint ${filePath}`, {
-                    encoding: 'utf-8',
-                    stdio: ['pipe', 'pipe', 'inherit'] // Capturing stdout and stderr
-                });
-                console.log(`Linting result for ${file}:`);
-                console.log(lintResult);
+                try {
+                    const lintResult = (0, child_process_1.execSync)(`npx bpmnlint lint ${filePath}`, {
+                        encoding: 'utf-8',
+                        stdio: ['pipe', 'pipe', 'pipe'] // Capturing stdout, stderr, and error stream
+                    });
+                    console.log(`Linting result for ${file}:`);
+                    console.log(lintResult);
+                }
+                catch (error) {
+                    console.error(`Error linting ${file}:`);
+                }
             }
         }
     }

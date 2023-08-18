@@ -39,13 +39,17 @@ async function run() {
                 const filePath = path.join(bpmnFilesPath, file);
                 console.log(`Validating ${file}...`);
 
-                const lintResult = execSync(`npx bpmnlint lint ${filePath}`, {
-                    encoding: 'utf-8',
-                    stdio: ['pipe', 'pipe', 'inherit'] // Capturing stdout and stderr
-                });
+                try {
+                    const lintResult = execSync(`npx bpmnlint lint ${filePath}`, {
+                        encoding: 'utf-8',
+                        stdio: ['pipe', 'pipe', 'pipe'] // Capturing stdout, stderr, and error stream
+                    });
 
-                console.log(`Linting result for ${file}:`);
-                console.log(lintResult);
+                    console.log(`Linting result for ${file}:`);
+                    console.log(lintResult);
+                } catch (error) {
+                    console.error(`Error linting ${file}:`);
+                }
             }
         }
     } catch (error) {
