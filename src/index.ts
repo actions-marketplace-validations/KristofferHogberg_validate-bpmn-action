@@ -3,7 +3,6 @@ import * as path from 'path';
 import { getInput, setFailed } from "@actions/core";
 import {readdirSync} from "fs";
 import {spawnSync} from "child_process";
-const chalk = require('chalk')
 
 async function validateProcessModels() {
     const customRules = getInput('custom-rules-folder');
@@ -37,6 +36,10 @@ async function validateProcessModels() {
         const bpmnFilesPath = path.join(process.cwd(), getInput('bpmn-files-path'));
         const bpmnFilesList = readdirSync(bpmnFilesPath, 'utf-8');
 
+        const ESCAPE_RESET = "\x1b[0m";
+        const ESCAPE_RED = "\x1b[31m";
+        const ESCAPE_GREEN = "\x1b[32m";
+
         for (const file of bpmnFilesList) {
             if (path.extname(file) === '.bpmn') {
                 const filePath = path.join(bpmnFilesPath, file);
@@ -47,11 +50,13 @@ async function validateProcessModels() {
                 const lintResult = spawnSync(lintCommand, lintArgs, { encoding: 'utf-8' });
 
                 if (lintResult.status === 0) {
-                    console.log(chalk.green(`Linting result for ${file}:`));
+                    console.log(`${ESCAPE_GREEN}Linting result for ${file}:`);
                     console.log(lintResult.stdout);
+                    console.log(ESCAPE_RESET);
                 } else {
-                    console.log(chalk.red(`Linting result for ${file}:`));
+                    console.log(`${ESCAPE_RED}Linting result for ${file}:`);
                     console.error(lintResult.stderr);
+                    console.log(ESCAPE_RESET);
                 }
             }
         }
