@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { getInput, setFailed } from "@actions/core";
-import { execSync } from 'child_process';
+import {execSync, spawnSync} from 'child_process';
 
 async function run() {
     const customRules = getInput('custom-rules-folder');
@@ -43,14 +43,16 @@ async function run() {
                 console.log(`Validating ${file}...`);
 
                 try {
-                    const lintCommand = `npx bpmnlint lint ${filePath}`;
-                    const lintResult = execSync(lintCommand, {
-                        encoding: 'utf-8',
-                        stdio: ['ignore', 'pipe', 'pipe'] // Ignore stdout, capture stderr and error stream
-                    });
+                    const lintCommand = `bpmnlint lint ${filePath}`;
+                    const lintResult = spawnSync(lintCommand, { shell: true, encoding: 'utf-8' });
 
-                    console.log(`Linting result for ${file}:`);
-                    console.log(lintResult);
+                    if (lintResult.error) {
+                        console.error(`Error linting ${file}:`);
+                        console.error(lintResult.error.message);
+                    } else {
+                        console.log(`Linting result for ${file}:`);
+                        console.log(lintResult.stdout);
+                    }
                 } catch (error) {
                     console.error(`Error linting ${file}:`);
                 }
