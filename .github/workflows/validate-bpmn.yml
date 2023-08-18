@@ -1,7 +1,7 @@
 name: "Validate BPMN process models"
 
 on:
-  workflow_dispatch:
+  workflow_call:
 
 jobs:
   validate_bpmn_process_models:
@@ -21,7 +21,7 @@ jobs:
 
       - uses: ./
         with:
-          bpmn-files-path:  BPMN
-          custom-rules-folder: custom_rules
-          bpmnlintrc-path: BPMN/.bpmnlintrc
+          bpmn-files-path: 'path/to/your/bpmn/files'
+          custom-rules-folder: 'path/to/custom_rules'
+          bpmnlintrc-path: 'path/to/.bpmnlintrc'
 
