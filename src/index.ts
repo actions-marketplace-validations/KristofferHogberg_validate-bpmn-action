@@ -31,16 +31,17 @@ async function run() {
         console.log(`.bpmnlintrc file created in current directory.`);
 
         // Run BPMN validation and output result
-        const bpmnFilesPath = path.join(bpmnFiles, '*.bpmn');
-        const bpmnFilesList = fs.readdirSync(bpmnFilesPath, 'utf-8');
+        const bpmnFilesList = fs.readdirSync(bpmnFiles, 'utf-8');
 
         for (const file of bpmnFilesList) {
-            const filePath = path.join(bpmnFilesPath, file);
-            console.log(`Validating ${file}...`);
-            const lintResult = execSync(`npx bpmnlint lint ${filePath}`, {
-                encoding: "utf-8"
-            });
-            console.log(`Linting result for ${file}:`, lintResult);
+            if (path.extname(file) === '.bpmn') {
+                const filePath = path.join(bpmnFiles, file);
+                console.log(`Validating ${file}...`);
+                const lintResult = execSync(`npx bpmnlint lint ${filePath}`, {
+                    encoding: "utf-8"
+                });
+                console.log(`Linting result for ${file}:`, lintResult);
+            }
         }
     } catch (error) {
         setFailed((error as Error)?.message ?? "Unknown error");
