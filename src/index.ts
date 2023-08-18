@@ -24,14 +24,17 @@ async function run() {
         const availableRules = fs.readdirSync(customRulesPath);
         console.log(`Available rules:`, availableRules);
 
-        // Read and create .bpmnlintrc configuration file
-        const bpmnlintrcContent = fs.readFileSync(bpmnlintrcPath, 'utf-8');
-        const currentDirBpmnlintrcPath = path.join(process.cwd(), '.bpmnlintrc');
-        fs.writeFileSync(currentDirBpmnlintrcPath, bpmnlintrcContent);
-        console.log(`.bpmnlintrc file created in current directory.`);
+        // Check bpmnlint version
+        try {
+            const versionCommand = 'npx bpmnlint --version';
+            const versionResult = execSync(versionCommand, { encoding: 'utf-8' });
+            console.log(`bpmnlint version: ${versionResult}`);
+        } catch (error) {
+            console.error(`Error checking bpmnlint version: ${error}`);
+        }
 
-        // Run BPMN validation and output result
-        const bpmnFilesPath = path.join(process.cwd(), bpmnFiles);
+        // Rest of the code to validate BPMN files
+        const bpmnFilesPath = path.join(process.cwd(), getInput('bpmn-files-path'));
         const bpmnFilesList = fs.readdirSync(bpmnFilesPath, 'utf-8');
 
         for (const file of bpmnFilesList) {
@@ -40,7 +43,8 @@ async function run() {
                 console.log(`Validating ${file}...`);
 
                 try {
-                    const lintResult = execSync(`npx bpmnlint lint ${filePath}`, {
+                    const lintCommand = `npx bpmnlint lint ${filePath}`;
+                    const lintResult = execSync(lintCommand, {
                         encoding: 'utf-8',
                         stdio: ['pipe', 'pipe', 'pipe'] // Capturing stdout, stderr, and error stream
                     });
