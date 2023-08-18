@@ -50,13 +50,11 @@ async function validateProcessModels() {
                 const lintResult = spawnSync(lintCommand, lintArgs, { encoding: 'utf-8' });
 
                 if (lintResult.status === 0) {
-                    console.log(`${ESCAPE_GREEN}Linting result for ${file}:`);
-                    // console.log(lintResult.stdout);
+                    console.log(`${ESCAPE_GREEN}No errors found in: ${file}:`);
                     console.log(ESCAPE_RESET);
                 } else {
-                    console.log(`${ESCAPE_RED}Linting result for ${file}:`);
+                    console.log(`${ESCAPE_RED}Errors found in: ${file}:`);
                     console.log(lintResult.stdout);
-                    // console.error(lintResult.stderr);
                     console.log(ESCAPE_RESET);
                 }
             }
