@@ -35,7 +35,7 @@ const path = __importStar(__nccwpck_require__(17));
 const core_1 = __nccwpck_require__(186);
 const child_process_1 = __nccwpck_require__(81);
 const fs_1 = __nccwpck_require__(147);
-async function run() {
+async function validateProcessModels() {
     var _a;
     const customRules = (0, core_1.getInput)('custom-rules-folder');
     const bpmnFiles = (0, core_1.getInput)('bpmn-files-path');
@@ -77,9 +77,14 @@ async function run() {
                 const lintCommand = 'bpmnlint';
                 const lintArgs = [filePath];
                 const lintResult = (0, child_process_1.spawnSync)(lintCommand, lintArgs, { encoding: 'utf-8' });
-                console.log(`Linting result for ${file}:`);
-                console.log(lintResult.stdout);
-                console.error(lintResult.stderr);
+                if (lintResult.status === 0) {
+                    console.log(`\x1b[32mLinting result for ${file}:\x1b[0m`);
+                    console.log(lintResult.stdout);
+                }
+                else {
+                    console.log(`\x1b[31mLinting result for ${file}:\x1b[0m`);
+                    console.error(lintResult.stderr);
+                }
             }
         }
     }
@@ -87,7 +92,7 @@ async function run() {
         (0, core_1.setFailed)((_a = error === null || error === void 0 ? void 0 : error.message) !== null && _a !== void 0 ? _a : "Unknown error");
     }
 }
-run();
+validateProcessModels();
 
 
 /***/ }),

@@ -4,7 +4,7 @@ import { getInput, setFailed } from "@actions/core";
 import {execSync, spawnSync} from 'child_process';
 import {readdirSync} from "fs";
 
-async function run() {
+async function validateProcessModels() {
     const customRules = getInput('custom-rules-folder');
     const bpmnFiles = getInput('bpmn-files-path');
     const bpmnlintrcPath = getInput('bpmnlintrc-path');
@@ -54,16 +54,19 @@ async function run() {
                 const lintArgs = [filePath];
                 const lintResult = spawnSync(lintCommand, lintArgs, { encoding: 'utf-8' });
 
-                console.log(`Linting result for ${file}:`);
-                console.log(lintResult.stdout);
-                console.error(lintResult.stderr);
+                if (lintResult.status === 0) {
+                    console.log(`\x1b[32mLinting result for ${file}:\x1b[0m`);
+                    console.log(lintResult.stdout);
+                } else {
+                    console.log(`\x1b[31mLinting result for ${file}:\x1b[0m`);
+                    console.error(lintResult.stderr);
+                }
             }
         }
-
 
     } catch (error) {
         setFailed((error as Error)?.message ?? "Unknown error");
     }
 }
 
-run();
+validateProcessModels();
