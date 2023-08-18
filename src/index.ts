@@ -48,15 +48,13 @@ async function run() {
                     console.log(`Contents of ${file}:`);
                     console.log(bpmnXmlContent);
 
-                    const lintCommand = `npx bpmnlint lint ${filePath}`;
-                    const lintResult = spawnSync(lintCommand, { shell: true, encoding: 'utf-8' });
+                    // Run bpmnlint command for the file
+                    const lintCommand = `bpmnlint ${filePath}`;
+                    const lintResult = execSync(lintCommand, { encoding: 'utf-8' });
 
-                    if (lintResult.error) {
-                        console.error(`Error linting ${file}:`);
-                        console.error(lintResult.error.message);
-                    } else {
+                    if (lintResult) {
                         console.log(`Linting result for ${file}:`);
-                        console.log(lintResult.stdout);
+                        console.log(lintResult);
                     }
                 } catch (error) {
                     console.error(`Error linting ${file}:`);
