@@ -43,7 +43,7 @@ async function run() {
                 console.log(`Validating ${file}...`);
 
                 try {
-                    const lintCommand = `bpmnlint lint ${filePath}`;
+                    const lintCommand = `bpmnlint ${filePath}`;
                     const lintResult = spawnSync(lintCommand, { shell: true, encoding: 'utf-8' });
 
                     if (lintResult.error) {
