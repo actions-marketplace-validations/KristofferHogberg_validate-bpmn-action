@@ -34,6 +34,7 @@ const fs = __importStar(__nccwpck_require__(147));
 const path = __importStar(__nccwpck_require__(17));
 const core_1 = __nccwpck_require__(186);
 const child_process_1 = __nccwpck_require__(81);
+const fs_1 = __nccwpck_require__(147);
 async function run() {
     var _a;
     const customRules = (0, core_1.getInput)('custom-rules-folder');
@@ -69,16 +70,17 @@ async function run() {
         console.log(bpmnlintrcContent);
         // Rest of the code to validate BPMN files
         const bpmnFilesPath = path.join(process.cwd(), (0, core_1.getInput)('bpmn-files-path'));
-        const bpmnFilesList = fs.readdirSync(bpmnFilesPath, 'utf-8');
+        const bpmnFilesList = (0, fs_1.readdirSync)(bpmnFilesPath, 'utf-8');
         for (const file of bpmnFilesList) {
             if (path.extname(file) === '.bpmn') {
                 const filePath = path.join(bpmnFilesPath, file);
-                // console.log(`Contents of ${file}:`);
-                const fileContents = fs.readFileSync(filePath, 'utf-8');
-                // console.log(fileContents);
-                const bpmnlintCommand = 'bpmnlint ' + fileContents;
-                const lintResult = (0, child_process_1.execSync)(bpmnlintCommand, { encoding: 'utf-8' });
-                console.log(lintResult);
+                console.log(`Validating ${file}...`);
+                const lintCommand = 'bpmnlint';
+                const lintArgs = [filePath];
+                const lintResult = (0, child_process_1.spawnSync)(lintCommand, lintArgs, { encoding: 'utf-8' });
+                console.log(`Linting result for ${file}:`);
+                console.log(lintResult.stdout);
+                console.error(lintResult.stderr);
             }
         }
     }

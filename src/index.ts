@@ -2,6 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { getInput, setFailed } from "@actions/core";
 import {execSync, spawnSync} from 'child_process';
+import {readdirSync} from "fs";
 
 async function run() {
     const customRules = getInput('custom-rules-folder');
@@ -42,19 +43,20 @@ async function run() {
 
         // Rest of the code to validate BPMN files
         const bpmnFilesPath = path.join(process.cwd(), getInput('bpmn-files-path'));
-        const bpmnFilesList = fs.readdirSync(bpmnFilesPath, 'utf-8');
+        const bpmnFilesList = readdirSync(bpmnFilesPath, 'utf-8');
 
         for (const file of bpmnFilesList) {
             if (path.extname(file) === '.bpmn') {
                 const filePath = path.join(bpmnFilesPath, file);
-                // console.log(`Contents of ${file}:`);
+                console.log(`Validating ${file}...`);
 
-                const fileContents = fs.readFileSync(filePath, 'utf-8');
-                // console.log(fileContents);
+                const lintCommand = 'bpmnlint';
+                const lintArgs = [filePath];
+                const lintResult = spawnSync(lintCommand, lintArgs, { encoding: 'utf-8' });
 
-                const bpmnlintCommand = 'bpmnlint ' + fileContents;
-                const lintResult = execSync(bpmnlintCommand, { encoding: 'utf-8' });
-                console.log(lintResult);
+                console.log(`Linting result for ${file}:`);
+                console.log(lintResult.stdout);
+                console.error(lintResult.stderr);
             }
         }
 
