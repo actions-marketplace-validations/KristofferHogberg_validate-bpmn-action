@@ -26,20 +26,20 @@ async function run() {
         console.log(`Available rules:`, availableRules);
 
         // Check bpmnlint version
-        try {
-            const versionCommand = 'bpmnlint --version';
-            const versionResult = execSync(versionCommand, { encoding: 'utf-8' });
-            console.log(`bpmnlint version: ${versionResult}`);
-        } catch (error) {
-            console.error(`Error checking bpmnlint version: ${error}`);
-        }
+        // try {
+        //     const versionCommand = 'bpmnlint --version';
+        //     const versionResult = execSync(versionCommand, { encoding: 'utf-8' });
+        //     console.log(`bpmnlint version: ${versionResult}`);
+        // } catch (error) {
+        //     console.error(`Error checking bpmnlint version: ${error}`);
+        // }
 
         // Read and create .bpmnlintrc configuration file
         const bpmnlintrcContent = fs.readFileSync(bpmnlintrcPath, 'utf-8');
         const currentDirBpmnlintrcPath = path.join(process.cwd(), '.bpmnlintrc');
         fs.writeFileSync(currentDirBpmnlintrcPath, bpmnlintrcContent);
         console.log(`.bpmnlintrc file created in current directory.`);
-        console.log(bpmnlintrcContent);
+        // console.log(bpmnlintrcContent);
 
         // Rest of the code to validate BPMN files
         const bpmnFilesPath = path.join(process.cwd(), getInput('bpmn-files-path'));
@@ -66,4 +66,4 @@ async function run() {
     }
 }
 
-run();
+run().then(r => {});
