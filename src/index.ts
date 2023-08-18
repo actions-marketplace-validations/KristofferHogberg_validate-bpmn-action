@@ -16,6 +16,23 @@ async function run() {
         });
         console.log("bpmnlint version:", bpmnlintVersion);
 
+        // READ AND CREATE .BPMNLINTRC
+        const bpmnlintConfigPath = path.join(bpmnlintrc, '.bpmnlintrc');
+        const bpmnlintrcContent = fs.readFileSync(bpmnlintConfigPath, 'utf-8');
+
+        console.log(`Contents of ${bpmnlintConfigPath}:`, bpmnlintrcContent);
+
+
+        // Write bpmnlintrc content to each BPMN file folder
+        // for (const file of bpmnlintConfig) {
+        //     const folderPath = path.dirname(path.join(bpmnFiles, file));
+        //     const bpmnlintrcFilePath = path.join(folderPath, '.bpmnlintrc');
+        //     fs.writeFileSync(bpmnlintrcFilePath, bpmnlintrcContent);
+        //     console.log(folderPath)
+        //
+        //     console.log(`.bpmnlintrc file created in ${folderPath}.`);
+        // }
+
 
         // READ AND PRINT BPMN MODELS
         const models = fs.readdirSync(bpmnFiles, 'utf-8')
@@ -29,41 +46,17 @@ async function run() {
             console.log(`Content of ${file}:`, fileContent);
         }
 
-        // READ AND CREATE .BPMNLINTRC
-        const bpmnlintConfig = fs.readdirSync(bpmnlintrc, 'utf-8')
-            .filter(file => file === '.bpmnlintrc');
-
-        console.log(`Contents of ${bpmnlintrc}:`, bpmnlintConfig);
-
-        let bpmnlintrcContent = '';
-        for (const file of bpmnlintConfig) {
-            const filePath = path.join(bpmnlintrc, file);
-            bpmnlintrcContent = fs.readFileSync(filePath, 'utf-8');
-            break; // Only use the first .bpmnlintrc file found
-        }
-
-        console.log(bpmnlintrcContent);
-
-        // Write bpmnlintrc content to each BPMN file folder
-        for (const file of models) {
-            const folderPath = path.dirname(path.join(bpmnFiles, file));
-            const bpmnlintrcFilePath = path.join(folderPath, '.bpmnlintrc');
-            fs.writeFileSync(bpmnlintrcFilePath, bpmnlintrcContent);
-            console.log(folderPath)
-
-            console.log(`.bpmnlintrc file created in ${folderPath}.`);
-        }
 
         // LINT BPMN FILES USING .BPMNLINTRC
-        for (const file of models) {
-            const filePath = path.join(bpmnFiles, file);
-
-            console.log(`Validating ${file}...`);
-            const lintResult = execSync(`npx bpmnlint lint ${filePath}`, {
-                encoding: "utf-8"
-            });
-            console.log(`Linting result for ${file}:`, lintResult);
-        }
+        // for (const file of models) {
+        //     const filePath = path.join(bpmnFiles, file);
+        //
+        //     console.log(`Validating ${file}...`);
+        //     const lintResult = execSync(`npx bpmnlint lint ${filePath}`, {
+        //         encoding: "utf-8"
+        //     });
+        //     console.log(`Linting result for ${file}:`, lintResult);
+        // }
 
 
     } catch (error) {
