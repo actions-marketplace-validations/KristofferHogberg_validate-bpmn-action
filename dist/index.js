@@ -54,7 +54,7 @@ async function run() {
         console.log(`Available rules:`, availableRules);
         // Check bpmnlint version
         try {
-            const versionCommand = 'npx bpmnlint --version';
+            const versionCommand = 'bpmnlint --version';
             const versionResult = (0, child_process_1.execSync)(versionCommand, { encoding: 'utf-8' });
             console.log(`bpmnlint version: ${versionResult}`);
         }
@@ -73,9 +73,12 @@ async function run() {
         for (const file of bpmnFilesList) {
             if (path.extname(file) === '.bpmn') {
                 const filePath = path.join(bpmnFilesPath, file);
-                console.log(`Contents of ${file}:`);
+                // console.log(`Contents of ${file}:`);
                 const fileContents = fs.readFileSync(filePath, 'utf-8');
-                console.log(fileContents);
+                // console.log(fileContents);
+                const bpmnlintCommand = 'bpmnlint ' + fileContents;
+                const lintResult = (0, child_process_1.execSync)(bpmnlintCommand, { encoding: 'utf-8' });
+                console.log(lintResult);
             }
         }
     }
