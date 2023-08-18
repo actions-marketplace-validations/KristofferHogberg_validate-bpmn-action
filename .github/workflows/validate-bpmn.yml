@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  validate_bpmn _process_models:
+  validate_bpmn_process_models:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
