@@ -31,16 +31,21 @@ async function run() {
         console.log(`.bpmnlintrc file created in current directory.`);
 
         // Run BPMN validation and output result
-        const bpmnFilesList = fs.readdirSync(bpmnFiles, 'utf-8');
+        const bpmnFilesPath = path.join(process.cwd(), bpmnFiles);
+        const bpmnFilesList = fs.readdirSync(bpmnFilesPath, 'utf-8');
 
         for (const file of bpmnFilesList) {
             if (path.extname(file) === '.bpmn') {
-                const filePath = path.join(bpmnFiles, file);
+                const filePath = path.join(bpmnFilesPath, file);
                 console.log(`Validating ${file}...`);
+
                 const lintResult = execSync(`npx bpmnlint lint ${filePath}`, {
-                    encoding: "utf-8"
+                    encoding: 'utf-8',
+                    stdio: ['pipe', 'pipe', 'inherit'] // Capturing stdout and stderr
                 });
-                console.log(`Linting result for ${file}:`, lintResult);
+
+                console.log(`Linting result for ${file}:`);
+                console.log(lintResult);
             }
         }
     } catch (error) {
