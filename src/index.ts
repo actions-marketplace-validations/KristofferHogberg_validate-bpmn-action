@@ -33,6 +33,13 @@ async function run() {
             console.error(`Error checking bpmnlint version: ${error}`);
         }
 
+        // Read and create .bpmnlintrc configuration file
+        const bpmnlintrcContent = fs.readFileSync(bpmnlintrcPath, 'utf-8');
+        const currentDirBpmnlintrcPath = path.join(process.cwd(), '.bpmnlintrc');
+        fs.writeFileSync(currentDirBpmnlintrcPath, bpmnlintrcContent);
+        console.log(`.bpmnlintrc file created in current directory.`);
+        console.log(bpmnlintrcContent);
+
         // Rest of the code to validate BPMN files
         const bpmnFilesPath = path.join(process.cwd(), getInput('bpmn-files-path'));
         const bpmnFilesList = fs.readdirSync(bpmnFilesPath, 'utf-8');
