@@ -19,9 +19,6 @@ jobs:
       - name: Install bpmnlint
         run: npm install -g bpmnlint
 
-      - name: Search for rules folder
-        run: find / -type d -name "rules" 2>/dev/null
-
       - uses: ./
         with:
           bpmn-files-path:  BPMN
