@@ -51,12 +51,12 @@ async function validateProcessModels() {
 
                 if (lintResult.status === 0) {
                     console.log(`${ESCAPE_GREEN}Linting result for ${file}:`);
-                    console.log(lintResult.stdout);
+                    // console.log(lintResult.stdout);
                     console.log(ESCAPE_RESET);
                 } else {
                     console.log(`${ESCAPE_RED}Linting result for ${file}:`);
                     console.log(lintResult.stdout);
-                    console.error(lintResult.stderr);
+                    // console.error(lintResult.stderr);
                     console.log(ESCAPE_RESET);
                 }
             }
