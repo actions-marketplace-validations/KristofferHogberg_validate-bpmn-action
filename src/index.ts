@@ -10,7 +10,7 @@ async function run() {
 
     try {
 
-        // CHECK BPMNLINT INSTALATION
+        // CHECK BPMNLINT INSTALLATION
         const bpmnlintVersion = execSync("npx bpmnlint --version", {
             encoding: "utf-8"
         });
@@ -20,7 +20,7 @@ async function run() {
         const bpmnlintConfigPath = path.join(bpmnlintrc, '.bpmnlintrc');
         const bpmnlintrcContent = fs.readFileSync(bpmnlintConfigPath, 'utf-8');
 
-        console.log(`Contents of ${bpmnlintConfigPath}:`, bpmnlintrcContent);
+        console.log(`BPMNLINT CONTENT ${bpmnlintConfigPath}:`, bpmnlintrcContent);
 
 
         // Write bpmnlintrc content to each BPMN file folder
@@ -35,16 +35,16 @@ async function run() {
 
 
         // READ AND PRINT BPMN MODELS
-        const models = fs.readdirSync(bpmnFiles, 'utf-8')
-            .filter(file => path.extname(file) === '.bpmn'); // Filter files by extension
-
-        console.log(`Contents of ${bpmnFiles}:`, models)
-
-        for (const file of models) {
-            const filePath = path.join(bpmnFiles, file);
-            const fileContent = fs.readFileSync(filePath, 'utf-8');
-            console.log(`Content of ${file}:`, fileContent);
-        }
+        // const models = fs.readdirSync(bpmnFiles, 'utf-8')
+        //     .filter(file => path.extname(file) === '.bpmn'); // Filter files by extension
+        //
+        // console.log(`Contents of ${bpmnFiles}:`, models)
+        //
+        // for (const file of models) {
+        //     const filePath = path.join(bpmnFiles, file);
+        //     const fileContent = fs.readFileSync(filePath, 'utf-8');
+        //     console.log(`Content of ${file}:`, fileContent);
+        // }
 
 
         // LINT BPMN FILES USING .BPMNLINTRC
