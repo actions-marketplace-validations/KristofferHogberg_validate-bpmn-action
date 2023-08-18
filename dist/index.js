@@ -78,6 +78,7 @@ async function validateProcessModels() {
                 }
                 else {
                     console.log(`${ESCAPE_RED}Linting result for ${file}:`);
+                    console.log(lintResult.stdout);
                     console.error(lintResult.stderr);
                     console.log(ESCAPE_RESET);
                 }
