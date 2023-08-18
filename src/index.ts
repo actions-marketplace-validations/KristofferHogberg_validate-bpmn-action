@@ -43,7 +43,12 @@ async function run() {
                 console.log(`Validating ${file}...`);
 
                 try {
-                    const lintCommand = `bpmnlint ${filePath}`;
+                    // Read the contents of the BPMN file
+                    const bpmnXmlContent = fs.readFileSync(filePath, 'utf-8');
+                    console.log(`Contents of ${file}:`);
+                    console.log(bpmnXmlContent);
+
+                    const lintCommand = `npx bpmnlint lint ${filePath}`;
                     const lintResult = spawnSync(lintCommand, { shell: true, encoding: 'utf-8' });
 
                     if (lintResult.error) {

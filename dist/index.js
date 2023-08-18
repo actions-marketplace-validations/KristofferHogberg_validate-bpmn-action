@@ -69,7 +69,11 @@ async function run() {
                 const filePath = path.join(bpmnFilesPath, file);
                 console.log(`Validating ${file}...`);
                 try {
-                    const lintCommand = `bpmnlint ${filePath}`;
+                    // Read the contents of the BPMN file
+                    const bpmnXmlContent = fs.readFileSync(filePath, 'utf-8');
+                    console.log(`Contents of ${file}:`);
+                    console.log(bpmnXmlContent);
+                    const lintCommand = `npx bpmnlint lint ${filePath}`;
                     const lintResult = (0, child_process_1.spawnSync)(lintCommand, { shell: true, encoding: 'utf-8' });
                     if (lintResult.error) {
                         console.error(`Error linting ${file}:`);
