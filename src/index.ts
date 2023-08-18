@@ -50,14 +50,9 @@ async function run() {
                 console.log(`Validating ${file}...`);
 
                 try {
-                    // Read the contents of the BPMN file
-                    const bpmnXmlContent = fs.readFileSync(filePath, 'utf-8');
-                    // console.log(`Contents of ${file}:`);
-                    // console.log(bpmnXmlContent);
-
                     // Run bpmnlint command for the file
                     const lintCommand = `bpmnlint ${filePath}`;
-                    const lintResult = execSync(lintCommand, { encoding: 'utf-8' });
+                    const lintResult = execSync(lintCommand, { encoding: 'utf-8', stdio: 'pipe' });
 
                     if (lintResult) {
                         console.log(`Linting result for ${file}:`);
