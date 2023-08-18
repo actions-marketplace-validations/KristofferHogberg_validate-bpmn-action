@@ -23,4 +23,4 @@ jobs:
         with:
           bpmn-files-path:  BPMN
           custom-rules-folder: custom_rules
-          bpmnlintrc-path: BPMN
+          bpmnlintrc-path: BPMN/.bpmnlintrc
