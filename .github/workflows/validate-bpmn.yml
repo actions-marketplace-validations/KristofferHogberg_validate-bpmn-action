@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  test:
+  Validate BPMN process models:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3

@@ -1,8 +1,9 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { getInput, setFailed } from "@actions/core";
-import {execSync, spawnSync} from 'child_process';
 import {readdirSync} from "fs";
+import {spawnSync} from "child_process";
+const chalk = require('chalk')
 
 async function validateProcessModels() {
     const customRules = getInput('custom-rules-folder');
@@ -45,9 +46,13 @@ async function validateProcessModels() {
                 const lintArgs = [filePath];
                 const lintResult = spawnSync(lintCommand, lintArgs, { encoding: 'utf-8' });
 
-                console.log(`Linting result for ${file}:`);
-                console.log(lintResult.stdout);
-                console.error(lintResult.stderr);
+                if (lintResult.status === 0) {
+                    console.log(chalk.green(`Linting result for ${file}:`));
+                    console.log(lintResult.stdout);
+                } else {
+                    console.log(chalk.red(`Linting result for ${file}:`));
+                    console.error(lintResult.stderr);
+                }
             }
         }
 
