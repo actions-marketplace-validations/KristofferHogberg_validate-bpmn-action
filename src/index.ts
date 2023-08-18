@@ -41,28 +41,28 @@ async function run() {
         console.log(bpmnlintrcContent);
 
         // Rest of the code to validate BPMN files
-        const bpmnFilesPath = path.join(process.cwd(), getInput('bpmn-files-path'));
-        const bpmnFilesList = fs.readdirSync(bpmnFilesPath, 'utf-8');
-
-        for (const file of bpmnFilesList) {
-            if (path.extname(file) === '.bpmn') {
-                const filePath = path.join(bpmnFilesPath, file);
-                console.log(`Validating ${file}...`);
-
-                try {
-                    // Run bpmnlint command for the file
-                    const lintCommand = `bpmnlint ${filePath}`;
-                    const lintResult = execSync(lintCommand, { encoding: 'utf-8', stdio: 'pipe' });
-
-                    if (lintResult) {
-                        console.log(`Linting result for ${file}:`);
-                        console.log(lintResult);
-                    }
-                } catch (error) {
-                    console.error(`Error linting ${file}:`);
-                }
-            }
-        }
+        // const bpmnFilesPath = path.join(process.cwd(), getInput('bpmn-files-path'));
+        // const bpmnFilesList = fs.readdirSync(bpmnFilesPath, 'utf-8');
+        //
+        // for (const file of bpmnFilesList) {
+        //     if (path.extname(file) === '.bpmn') {
+        //         const filePath = path.join(bpmnFilesPath, file);
+        //         console.log(`Validating ${file}...`);
+        //
+        //         try {
+        //             // Run bpmnlint command for the file
+        //             const lintCommand = `bpmnlint ${filePath}`;
+        //             const lintResult = execSync(lintCommand, { encoding: 'utf-8', stdio: 'pipe' });
+        //
+        //             if (lintResult) {
+        //                 console.log(`Linting result for ${file}:`);
+        //                 console.log(lintResult);
+        //             }
+        //         } catch (error) {
+        //             console.error(`Error linting ${file}:`);
+        //         }
+        //     }
+        // }
     } catch (error) {
         setFailed((error as Error)?.message ?? "Unknown error");
     }
