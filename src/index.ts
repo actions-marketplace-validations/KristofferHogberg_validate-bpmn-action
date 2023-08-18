@@ -52,8 +52,8 @@ async function run() {
                 try {
                     // Read the contents of the BPMN file
                     const bpmnXmlContent = fs.readFileSync(filePath, 'utf-8');
-                    console.log(`Contents of ${file}:`);
-                    console.log(bpmnXmlContent);
+                    // console.log(`Contents of ${file}:`);
+                    // console.log(bpmnXmlContent);
 
                     // Run bpmnlint command for the file
                     const lintCommand = `bpmnlint ${filePath}`;
