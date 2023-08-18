@@ -25,14 +25,3 @@ jobs:
           custom-rules-folder: custom_rules
           bpmnlintrc-path: BPMN/.bpmnlintrc
 
-      # Run BPMN validation and output result
-      - name: Run BPMN validation and output result
-        run: |
-          for file in ${{ inputs.bpmn-files-path }}/*.bpmn; do
-            if [ -z "$(bpmnlint "$file")" ]; then
-              echo -e "\033[32mNo errors found in $file\033[0m"
-            else
-              echo -e "\033[31mErrors found in $file:\033[0m"
-              bpmnlint "$file" || true
-            fi
-          done
