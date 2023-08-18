@@ -10,7 +10,7 @@ async function validateProcessModels() {
     const bpmnlintrcPath = getInput('bpmnlintrc-path');
 
     try {
-        // Copy custom rules
+        // Copy custom rules to bpmnlint installation.
         const customRulesPath = path.join('/opt/hostedtoolcache/node/16.20.1/x64/lib/node_modules/bpmnlint/rules');
         const customRulesFiles = fs.readdirSync(customRules, 'utf-8');
 
@@ -21,27 +21,18 @@ async function validateProcessModels() {
             console.log(`Copied ${file} to ${customRulesPath}`);
         }
 
-        // List all available rules
+        // List all implemented rules.
         const availableRules = fs.readdirSync(customRulesPath);
         console.log(`Available rules:`, availableRules);
 
-        // Check bpmnlint version
-        // try {
-        //     const versionCommand = 'bpmnlint --version';
-        //     const versionResult = execSync(versionCommand, { encoding: 'utf-8' });
-        //     console.log(`bpmnlint version: ${versionResult}`);
-        // } catch (error) {
-        //     console.error(`Error checking bpmnlint version: ${error}`);
-        // }
 
-        // Read and create .bpmnlintrc configuration file
+        // Create .bpmnlintrc configuration file from input.
         const bpmnlintrcContent = fs.readFileSync(bpmnlintrcPath, 'utf-8');
         const currentDirBpmnlintrcPath = path.join(process.cwd(), '.bpmnlintrc');
         fs.writeFileSync(currentDirBpmnlintrcPath, bpmnlintrcContent);
         console.log(`.bpmnlintrc file created in current directory.`);
-        // console.log(bpmnlintrcContent);
 
-        // Rest of the code to validate BPMN files
+        // Run and output validation of .bpmn files from input.
         const bpmnFilesPath = path.join(process.cwd(), getInput('bpmn-files-path'));
         const bpmnFilesList = readdirSync(bpmnFilesPath, 'utf-8');
 
@@ -54,13 +45,9 @@ async function validateProcessModels() {
                 const lintArgs = [filePath];
                 const lintResult = spawnSync(lintCommand, lintArgs, { encoding: 'utf-8' });
 
-                if (lintResult.status === 0) {
-                    console.log(`\x1b[32mLinting result for ${file}:\x1b[0m`);
-                    console.log(lintResult.stdout);
-                } else {
-                    console.log(`\x1b[31mLinting result for ${file}:\x1b[0m`);
-                    console.error(lintResult.stderr);
-                }
+                console.log(`Linting result for ${file}:`);
+                console.log(lintResult.stdout);
+                console.error(lintResult.stderr);
             }
         }
 
