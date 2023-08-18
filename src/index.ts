@@ -46,7 +46,7 @@ async function run() {
                     const lintCommand = `npx bpmnlint lint ${filePath}`;
                     const lintResult = execSync(lintCommand, {
                         encoding: 'utf-8',
-                        stdio: ['pipe', 'pipe', 'pipe'] // Capturing stdout, stderr, and error stream
+                        stdio: ['ignore', 'pipe', 'pipe'] // Ignore stdout, capture stderr and error stream
                     });
 
                     console.log(`Linting result for ${file}:`);
