@@ -7,11 +7,23 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-
       - uses: actions/checkout@v3
+
+      # Set up NodeJs
+      - name: Set up NodeJs
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+
+      # Install bpmnlint
+      - name: Install bpmnlint
+        run: npm install -g bpmnlint
+
+      - name: Search for rules folder
+        run: find / -type d -name "rules" 2>/dev/null
+
       - uses: ./
         with:
-          bpmn-files-path: "BPMN"
-          custom-rules-folder: "custom_rules"
-          bpmnlintrc-path: "BPMN"
-
+          bpmn-files-path:  BPMN
+          custom-rules-folder: custom_rules
+          bpmnlintrc-path: BPMN
