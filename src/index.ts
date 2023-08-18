@@ -16,6 +16,10 @@ async function run() {
         });
         console.log("bpmnlint version:", bpmnlintVersion);
 
+        const bpmnlintInstallationPath = path.dirname(require.resolve('bpmnlint'));
+
+        console.log("bpmnlint path:", bpmnlintInstallationPath);
+
         // READ AND CREATE .BPMNLINTRC
         const bpmnlintConfigPath = path.join(bpmnlintrc, '.bpmnlintrc');
         const bpmnlintrcContent = fs.readFileSync(bpmnlintConfigPath, 'utf-8');

@@ -45,6 +45,8 @@ async function run() {
             encoding: "utf-8"
         });
         console.log("bpmnlint version:", bpmnlintVersion);
+        const bpmnlintInstallationPath = path.dirname(__nccwpck_require__.ab + "index1.js");
+        console.log("bpmnlint path:", bpmnlintInstallationPath);
         // READ AND CREATE .BPMNLINTRC
         const bpmnlintConfigPath = path.join(bpmnlintrc, '.bpmnlintrc');
         const bpmnlintrcContent = fs.readFileSync(bpmnlintConfigPath, 'utf-8');
