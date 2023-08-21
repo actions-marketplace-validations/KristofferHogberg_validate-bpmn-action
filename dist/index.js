@@ -35,53 +35,61 @@ const path = __importStar(__nccwpck_require__(17));
 const core_1 = __nccwpck_require__(186);
 const fs_1 = __nccwpck_require__(147);
 const child_process_1 = __nccwpck_require__(81);
-async function validateProcessModels() {
-    var _a;
-    const customRules = (0, core_1.getInput)('custom-rules-folder');
-    const bpmnFiles = (0, core_1.getInput)('bpmn-files-path');
-    const bpmnlintrcPath = (0, core_1.getInput)('bpmnlintrc-path');
-    try {
-        // Copy custom rules to bpmnlint installation.
-        const customRulesPath = path.join('/opt/hostedtoolcache/node/16.20.1/x64/lib/node_modules/bpmnlint/rules');
-        const customRulesFiles = fs.readdirSync(customRules, 'utf-8');
-        for (const file of customRulesFiles) {
-            const sourceFilePath = path.join(customRules, file);
-            const targetFilePath = path.join(customRulesPath, file);
-            fs.copyFileSync(sourceFilePath, targetFilePath);
-            console.log(`Copied ${file} to ${customRulesPath}`);
-        }
-        // List all implemented rules.
-        const availableRules = fs.readdirSync(customRulesPath);
-        console.log(`Available rules:`, availableRules);
-        // Create .bpmnlintrc configuration file from input.
-        const bpmnlintrcContent = fs.readFileSync(bpmnlintrcPath, 'utf-8');
-        const currentDirBpmnlintrcPath = path.join(process.cwd(), '.bpmnlintrc');
-        fs.writeFileSync(currentDirBpmnlintrcPath, bpmnlintrcContent);
-        console.log(`.bpmnlintrc file created in current directory.`);
-        // Run and output validation of .bpmn files from input.
-        const bpmnFilesPath = path.join(process.cwd(), (0, core_1.getInput)('bpmn-files-path'));
-        const bpmnFilesList = (0, fs_1.readdirSync)(bpmnFilesPath, 'utf-8');
-        const ESCAPE_RESET = "\x1b[0m";
-        const ESCAPE_RED = "\x1b[31m";
-        const ESCAPE_GREEN = "\x1b[32m";
-        for (const file of bpmnFilesList) {
-            if (path.extname(file) === '.bpmn') {
-                const filePath = path.join(bpmnFilesPath, file);
-                console.log(`Validating ${file}...`);
-                const lintCommand = 'bpmnlint';
-                const lintArgs = [filePath];
-                const lintResult = (0, child_process_1.spawnSync)(lintCommand, lintArgs, { encoding: 'utf-8' });
-                if (lintResult.status === 0) {
-                    console.log(`${ESCAPE_GREEN}No errors found in: ${file}:`);
-                    console.log(ESCAPE_RESET);
-                }
-                else {
-                    console.log(`${ESCAPE_RED}Errors found in: ${file}:`);
-                    console.log(lintResult.stdout);
-                    console.log(ESCAPE_RESET);
-                }
+function copyCustomRules(customRules) {
+    const customRulesPath = path.join('/opt/hostedtoolcache/node/16.20.1/x64/lib/node_modules/bpmnlint/rules');
+    const customRulesFiles = fs.readdirSync(customRules, 'utf-8');
+    for (const file of customRulesFiles) {
+        const sourceFilePath = path.join(customRules, file);
+        const targetFilePath = path.join(customRulesPath, file);
+        fs.copyFileSync(sourceFilePath, targetFilePath);
+        console.log(`Copied ${file} to ${customRulesPath}`);
+    }
+}
+function listAvailableRules() {
+    const customRulesPath = path.join('/opt/hostedtoolcache/node/16.20.1/x64/lib/node_modules/bpmnlint/rules');
+    const availableRules = fs.readdirSync(customRulesPath);
+    console.log(`Available rules:`, availableRules);
+}
+function createBpmnlintrc(bpmnlintrcPath) {
+    const bpmnlintrcContent = fs.readFileSync(bpmnlintrcPath, 'utf-8');
+    const currentDirBpmnlintrcPath = path.join(process.cwd(), '.bpmnlintrc');
+    fs.writeFileSync(currentDirBpmnlintrcPath, bpmnlintrcContent);
+    console.log(`.bpmnlintrc file created in current directory.`);
+}
+function validateBpmnFiles(bpmnFilesPath) {
+    const bpmnFilesList = (0, fs_1.readdirSync)(bpmnFilesPath, 'utf-8');
+    const ESCAPE_RESET = "\x1b[0m";
+    const ESCAPE_RED = "\x1b[31m";
+    const ESCAPE_GREEN = "\x1b[32m";
+    for (const file of bpmnFilesList) {
+        if (path.extname(file) === '.bpmn') {
+            const filePath = path.join(bpmnFilesPath, file);
+            console.log(`Validating ${file}...`);
+            const lintCommand = 'bpmnlint';
+            const lintArgs = [filePath];
+            const lintResult = (0, child_process_1.spawnSync)(lintCommand, lintArgs, { encoding: 'utf-8' });
+            if (lintResult.status === 0) {
+                console.log(`${ESCAPE_GREEN}No errors found in: ${file}:`);
+                console.log(ESCAPE_RESET);
+            }
+            else {
+                console.log(`${ESCAPE_RED}Errors found in: ${file}:`);
+                console.log(lintResult.stdout);
+                console.log(ESCAPE_RESET);
             }
         }
+    }
+}
+async function validateProcessModels() {
+    var _a;
+    try {
+        const customRules = (0, core_1.getInput)('custom-rules-folder');
+        const bpmnFiles = (0, core_1.getInput)('bpmn-files-path');
+        const bpmnlintrcPath = (0, core_1.getInput)('bpmnlintrc-path');
+        copyCustomRules(customRules);
+        listAvailableRules();
+        createBpmnlintrc(bpmnlintrcPath);
+        validateBpmnFiles(bpmnFiles);
     }
     catch (error) {
         (0, core_1.setFailed)((_a = error === null || error === void 0 ? void 0 : error.message) !== null && _a !== void 0 ? _a : "Unknown error");
