@@ -18,7 +18,7 @@ runs:
   steps:
     # Set up NodeJs
     - name: Set up NodeJs
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v3
       with:
         node-version: 16.20.1
 
