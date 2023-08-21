@@ -15,6 +15,7 @@ inputs:
 
 runs:
   using: "composite"
+  working-directory: ${{ github.workspace }}
   steps:
     # Set up NodeJs
     - name: Set up NodeJs
