@@ -111,5 +111,10 @@ async function runBpmnValidationWorkflow() {
     }
 }
 
-
-runBpmnValidationWorkflow();
+runBpmnValidationWorkflow()
+    .then(() => {
+        console.log("Workflow completed successfully.");
+    })
+    .catch((error) => {
+        console.error("Workflow failed:", error);
+    });
