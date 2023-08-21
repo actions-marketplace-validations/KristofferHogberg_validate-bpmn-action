@@ -14,22 +14,8 @@ inputs:
     required: true
 
 runs:
-  using: "composite"
-  steps:
-    # Set up NodeJs
-    - name: Set up NodeJs
-      uses: actions/setup-node@v3
-      with:
-        node-version: 16.20.1
-
-    # Install bpmnlint
-    - name: Install bpmnlint
-      shell: bash
-      run: npm install -g bpmnlint
-
-    # Run action scriptSchema validation
-    - run: node ${{ github.workspace }}/dist/index.js
-      shell: bash
+  using: "node16"
+  main: "dist/index.js"
 
 branding:
   icon: 'activity'

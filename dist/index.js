@@ -35,6 +35,16 @@ const path = __importStar(__nccwpck_require__(17));
 const core_1 = __nccwpck_require__(186);
 const fs_1 = __nccwpck_require__(147);
 const child_process_1 = __nccwpck_require__(81);
+const exec = __nccwpck_require__(290);
+const setupNode = __nccwpck_require__(967);
+async function setupNodeJs() {
+    // Set up NodeJs
+    const nodeVersion = '16.20.1';
+    await setupNode.setupNode(nodeVersion);
+}
+async function installBpmnlint() {
+    await exec.exec('npm', ['install', '-g', 'bpmnlint']);
+}
 async function copyCustomRules(customRules) {
     var _a;
     try {
@@ -120,6 +130,8 @@ async function runBpmnValidationWorkflow() {
         if (!bpmnlintrcPath) {
             throw new Error("BPMNlintrc path is required.");
         }
+        await setupNodeJs();
+        await installBpmnlint();
         await copyCustomRules(customRules);
         await listAvailableRules();
         await createBpmnlintrc(bpmnlintrcPath);
@@ -2858,6 +2870,22 @@ function version(uuid) {
 
 var _default = version;
 exports["default"] = _default;
+
+/***/ }),
+
+/***/ 290:
+/***/ ((module) => {
+
+module.exports = eval("require")("@actions/exec");
+
+
+/***/ }),
+
+/***/ 967:
+/***/ ((module) => {
+
+module.exports = eval("require")("@actions/setup-node");
+
 
 /***/ }),
 
