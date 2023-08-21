@@ -3,19 +3,6 @@ import * as path from 'path';
 import {getInput, setFailed} from "@actions/core";
 import {readdirSync} from "fs";
 import {spawnSync} from "child_process";
-const exec = require('@actions/exec');
-const setupNode = require('@actions/setup-node');
-
-
-async function setupNodeJs() {
-    // Set up NodeJs
-    const nodeVersion = '16.20.1';
-    await setupNode.setupNode(nodeVersion);
-}
-
-async function installBpmnlint() {
-    await exec.exec('npm', ['install', '-g', 'bpmnlint']);
-}
 
 async function copyCustomRules(customRules: string) {
 
@@ -113,8 +100,6 @@ async function runBpmnValidationWorkflow() {
         if (!bpmnlintrcPath) {
             throw new Error("BPMNlintrc path is required.");
         }
-        await setupNodeJs();
-        await installBpmnlint();
         await copyCustomRules(customRules);
         await listAvailableRules();
         await createBpmnlintrc(bpmnlintrcPath);

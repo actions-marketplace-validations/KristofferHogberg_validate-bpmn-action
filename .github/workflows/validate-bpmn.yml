@@ -8,15 +8,15 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-#      # Set up NodeJs
-#      - name: Set up NodeJs
-#        uses: actions/setup-node@v3
-#        with:
-#          node-version: 16.20.1
-#
-#      # Install bpmnlint
-#      - name: Install bpmnlint
-#        run: npm install -g bpmnlint
+      # Set up NodeJs
+      - name: Set up NodeJs
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.20.1
+
+      # Install bpmnlint
+      - name: Install bpmnlint
+        run: npm install -g bpmnlint
 
       - uses: ./
         with:
