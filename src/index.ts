@@ -1,8 +1,8 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { getInput, setFailed } from "@actions/core";
-import { readdirSync } from "fs";
-import { spawnSync } from "child_process";
+import {getInput, setFailed} from "@actions/core";
+import {readdirSync} from "fs";
+import {spawnSync} from "child_process";
 
 function copyCustomRules(customRules: string) {
     const customRulesPath = path.join('/opt/hostedtoolcache/node/16.20.1/x64/lib/node_modules/bpmnlint/rules');
@@ -43,7 +43,7 @@ function validateBpmnFiles(bpmnFilesPath: string) {
 
             const lintCommand = 'bpmnlint';
             const lintArgs = [filePath];
-            const lintResult = spawnSync(lintCommand, lintArgs, { encoding: 'utf-8' });
+            const lintResult = spawnSync(lintCommand, lintArgs, {encoding: 'utf-8'});
 
             if (lintResult.status === 0) {
                 console.log(`${ESCAPE_GREEN}No errors found in: ${file}:`);
@@ -63,6 +63,17 @@ async function validateProcessModels() {
         const bpmnFiles = getInput('bpmn-files-path');
         const bpmnlintrcPath = getInput('bpmnlintrc-path');
 
+        // Validate inputs
+        if (!customRules) {
+            throw new Error("Custom rules folder is required.");
+        }
+        if (!bpmnFiles) {
+            throw new Error("BPMN files path is required.");
+        }
+        if (!bpmnlintrcPath) {
+            throw new Error("BPMNlintrc path is required.");
+        }
+
         copyCustomRules(customRules);
         listAvailableRules();
         createBpmnlintrc(bpmnlintrcPath);
@@ -72,5 +83,6 @@ async function validateProcessModels() {
         setFailed((error as Error)?.message ?? "Unknown error");
     }
 }
+
 
 validateProcessModels();

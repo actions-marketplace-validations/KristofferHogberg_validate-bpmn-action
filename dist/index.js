@@ -86,6 +86,16 @@ async function validateProcessModels() {
         const customRules = (0, core_1.getInput)('custom-rules-folder');
         const bpmnFiles = (0, core_1.getInput)('bpmn-files-path');
         const bpmnlintrcPath = (0, core_1.getInput)('bpmnlintrc-path');
+        // Validate inputs
+        if (!customRules) {
+            throw new Error("Custom rules folder is required.");
+        }
+        if (!bpmnFiles) {
+            throw new Error("BPMN files path is required.");
+        }
+        if (!bpmnlintrcPath) {
+            throw new Error("BPMNlintrc path is required.");
+        }
         copyCustomRules(customRules);
         listAvailableRules();
         createBpmnlintrc(bpmnlintrcPath);
