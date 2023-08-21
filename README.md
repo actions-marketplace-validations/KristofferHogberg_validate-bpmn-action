@@ -18,19 +18,17 @@ To use this workflow, follow these steps:
    name: Use Camunda BPMN-validate workflow action
 
    on:
-     push:
-       branches:
-         - main
-
+      workflow_dispatch:
+   
    jobs:
    call_bpmn_validate_workflow:
    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
-      # Set up NodeJs
+      # Set up NodeJs (this action is only compatible with nodejs 16.20.1 at this moment)
       - name: Set up NodeJs
         uses: actions/setup-node@v3
         with:
