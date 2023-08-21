@@ -1,23 +1,9 @@
 name: "Validate BPMN process models"
 
 on:
-  workflow_dispatch:
-    inputs:
-      bpmn-files-path:
-        description: 'Location of your process models.'
-        required: true
-        type: string
-        default: 'BPMN'
-      custom-rules-folder:
-        description: 'Location of your custom bpmnlint rules.'
-        required: true
-        type: string
-        default: 'custom_rules'
-      bpmnlintrc-path:
-        description: "Location of your bpmnlintrc configuration file."
-        required: true
-        type: string
-        default: 'BPMN/.bpmnlintrc'
+  push:
+    branches:
+      - main
 jobs:
   validate_bpmn_process_models:
     runs-on: ubuntu-latest
